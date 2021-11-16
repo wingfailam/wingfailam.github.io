@@ -1,24 +1,16 @@
 # taiwantravel-vue-2
 
-## Project setup
+## Routes
 ```
-yarn install
-```
+|-- ScenicSpots	/:city	/:q
+|-- ScenicSpot	/:id
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+|-- Restaurants
+|-- Restaurant	
 
-### Compiles and minifies for production
-```
-yarn build
-```
+|-- Hotels
+|-- Hotel
 
-### Lints and fixes files
+|-- Activities
+|-- Activity
 ```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
