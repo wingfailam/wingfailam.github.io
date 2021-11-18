@@ -4,32 +4,117 @@
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <header>
       <div class="logo"></div>
-      <div class="select-container">
-        <div class="dropdown">台灣</div>
-        <input class="search" name="taiwantravel-search" />
+      <div class="bar-container" :class="{ active: toggle == 1 }">
+        <div class="bar-wrapper">
+          <div class="dropdown" @click="toggle = !toggle">
+            {{ SelectedArea.CityName }}
+            /
+            {{ SelectedType.Zh }}
+          </div>
+          <input class="search" name="taiwantravel-search" placeholder="請輸入關鍵詞" />
+          <div class="submit">SEARCH</div>
+        </div>
 
-        <div class="submit">SEARCH</div>
+        <div class="dropdown-container" :class="{ active: toggle == 1 }">
+          <h2>選擇區域</h2>
+          <button
+            @click="SelectedArea = defaultArea"
+            :class="{ active: SelectedArea == defaultArea }"
+          >
+            台灣
+          </button>
+          <div class="tabs-container">
+            <!-- <div class="radio-container">
+              <input
+                type="radio"
+                class="tabs-radio"
+                name="tabs"
+                v-for="(city, index) in Object.keys(cities)"
+                :key="city.id"
+                :id="'tab-' + index"
+                :checked="index == 0"
+              />
+              <div class="label-container">
+                <label
+                  v-for="(city, index) in Object.keys(cities)"
+                  :key="city.id"
+                  :for="'tab-' + index"
+                  class="tabs-label"
+                  :id="'label-' + index"
+                  >{{ cities[city].Zh }}</label
+                >
+              </div>
+            </div> -->
+            <div class="radio-container">
+              <input
+                type="radio"
+                class="tabs-radio"
+                name="tabs"
+                v-for="(city, index) in Object.keys(cities)"
+                :key="city.id"
+                :id="'tab-' + index"
+                :checked="index == 0"
+              />
+
+              <label
+                v-for="(city, index) in Object.keys(cities)"
+                :key="city.id"
+                :for="'tab-' + index"
+                class="tabs-label"
+                :id="'label-' + index"
+                >{{ cities[city].Zh }}</label
+              >
+              <div class="cities-container">
+                <div class="cities-slide">
+                  <div class="cities-wrapper" v-for="area in Object.keys(cities)" :key="area.id">
+                    <!-- <p>{{ cities[area].Zh }}</p> -->
+                    <button
+                      v-for="cts in cities[area].Cities"
+                      :key="cts.City"
+                      @click="SelectedArea = cts"
+                      :class="{ active: SelectedArea == cts }"
+                    >
+                      {{ cts.CityName }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h2>選擇類型</h2>
+          <div class="type-container">
+            <button
+              v-for="type in types"
+              :key="type.En"
+              @click="SelectedType = type"
+              :class="{ active: SelectedType == type }"
+            >
+              {{ type.Zh }}
+            </button>
+          </div>
+
+          <div class="completion-container">
+            <button class="active" @click="toggle = !toggle">OK</button>
+          </div>
+        </div>
       </div>
     </header>
     <div class="cat-container">
       <h2>熱門景點</h2>
       <div class="scenicspots-container">
-        <!-- <div class="scenicspots-item l">
-          <span>{{ scenicspots[0].CityName }}</span>
-        </div>
-        <div class="scenicspots-item"></div>
-        <div class="scenicspots-item"></div>
-        <div class="scenicspots-item l"></div>
-        <div class="scenicspots-item"></div>
-        <div class="scenicspots-item"></div>
-        <div class="scenicspots-item l"></div> -->
         <div
           v-for="(scenicspot, index) in scenicspots"
           :key="scenicspot.id"
           class="scenicspots-item"
           :class="{ l: index % 3 == 0 }"
         >
-          {{ scenicspot.CityName }}
+          <div
+            class="bgi"
+            :style="{
+              'background-image': 'url(' + scenicspot.Picture.PictureUrl1 + ')',
+            }"
+          ></div>
+          <span> {{ scenicspot.Name }}</span>
         </div>
       </div>
       <h2>隱藏美食</h2>
@@ -45,44 +130,47 @@
           <p class="time"><span class="time-icon"></span>{{ restaurant.OpenTime }}</p>
           <p class="address"><span class="address-icon"></span>{{ restaurant.Address }}</p>
         </div>
-        <!-- <div class="restaurants-item">
-          <h2 class="title">標題</h2>
-          <p class="time">時間</p>
-          <p class="address">地址</p>
-        </div>
-        <div class="restaurants-item"></div>
-        <div class="restaurants-item"></div>
-        <div class="restaurants-item"></div>
-        <div class="restaurants-item"></div> -->
       </div>
 
       <h2>住宿推薦</h2>
       <div class="hotels-container">
-        <div class="hotels-item">
-          <h2 class="title">標題</h2>
-          <p class="address">地址</p>
+        <div v-for="hotel in hotels" :key="hotel.id" class="hotels-item">
+          <div
+            class="bgi"
+            :style="{
+              'background-image': 'url(' + hotel.Picture.PictureUrl1 + ')',
+            }"
+          ></div>
+          <h2 class="title">{{ hotel.Name }}</h2>
+          <p class="address"><span class="address-icon"></span>{{ hotel.Address }}</p>
         </div>
-        <div class="hotels-item"></div>
-        <div class="hotels-item"></div>
-        <div class="hotels-item"></div>
-        <div class="hotels-item"></div>
-        <div class="hotels-item"></div>
       </div>
       <h2>體驗活動</h2>
       <div class="activities-container">
-        <div class="activity-item">
+        <!-- <div class="activity-item">
           <div class="img"></div>
           <div class="content">
             <h2 class="title">標題</h2>
             <p class="date">日期</p>
             <p class="address">地址</p>
           </div>
+        </div> -->
+        <div v-for="activity in activities" :key="activity.id" class="activity-item">
+          <div class="img">
+            <div
+              class="bgi"
+              :style="{
+                'background-image': 'url(' + activity.Picture.PictureUrl1 + ')',
+              }"
+            ></div>
+          </div>
+          <div class="content">
+            <h2 class="title">{{ activity.Name }}</h2>
+            <p class="address"><span class="address-icon"></span>{{ activity.Address }}</p>
+            <br />
+            <p>{{ activity.Description }}</p>
+          </div>
         </div>
-        <div class="activity-item"></div>
-        <div class="activity-item"></div>
-        <div class="activity-item"></div>
-        <div class="activity-item"></div>
-        <div class="activity-item"></div>
       </div>
     </div>
   </div>
@@ -97,6 +185,9 @@ import axios from 'axios';
 import _ from 'lodash';
 import JsSHA from 'jssha';
 
+import cities from '../components/Cities';
+import types from '../components/Types';
+
 function getAuthorizationHeader() {
   const AppID = '705e9a212c3242ed9a2fa2355b84f418';
   const AppKey = 'o2tSBueG3Dtk4o--mJKUv5kmGlE';
@@ -110,17 +201,18 @@ function getAuthorizationHeader() {
   return { Authorization, 'X-Date': GMTString };
 }
 
-function getCities7() {
-  return new Promise((resolve) => {
-    const api = 'https://gist.motc.gov.tw/gist_api/V3/Map/Basic/City?$format=JSON';
-    return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-      // console.log(response.data);
-      const newData = _.shuffle(response.data);
-      console.log(newData);
-      resolve(newData.slice(0, 7));
-    });
-  });
-}
+// function getCities7() {
+//   return new Promise((resolve) => {
+//     const api = 'https://gist.motc.gov.tw/gist_api/V3/Map/Basic/City?$format=JSON';
+//     return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
+//       // console.log(response.data);
+//       const newData = _.shuffle(response.data);
+//       console.log(newData);
+//       resolve(newData.slice(0, 7));
+//     });
+//   });
+// }
+
 function getRestaurants5() {
   return new Promise((resolve) => {
     const api = 'https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant?$filter=Picture%2FPictureUrl1%20ne%20null&$format=JSON';
@@ -133,6 +225,63 @@ function getRestaurants5() {
   });
 }
 
+function getScenicSpot7() {
+  return new Promise((resolve) => {
+    const api = 'https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot?'
+      + '$filter=Picture%2FPictureUrl1%20ne%20null&'
+      + '$format=JSON';
+    return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
+      // console.log(response.data);
+      const newData = _.shuffle(response.data);
+      console.log(newData);
+      resolve(newData.slice(0, 7));
+    });
+  });
+}
+
+function getHotel6() {
+  return new Promise((resolve) => {
+    const api = 'https://ptx.transportdata.tw/MOTC/v2/Tourism/Hotel?'
+      + '$filter=Picture%2FPictureUrl1%20ne%20null&'
+      + '$format=JSON';
+    return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
+      // console.log(response.data);
+      const newData = _.shuffle(response.data);
+      console.log(newData);
+      resolve(newData.slice(0, 7));
+    });
+  });
+}
+function shortDescription(description) {
+  let temp;
+  const num = 100;
+  if (description.length > num) {
+    temp = description.slice(0, num);
+    temp += '......';
+    return temp;
+  }
+  return description;
+}
+function getActivities6() {
+  return new Promise((resolve) => {
+    const api = 'https://ptx.transportdata.tw/MOTC/v2/Tourism/Activity?'
+      + '$filter=Picture%2FPictureUrl1%20ne%20null&'
+      + '$format=JSON';
+    return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
+      // console.log(response.data);
+      let newData = _.shuffle(response.data);
+      newData = newData.map((element) => {
+        const temp = element;
+        temp.Description = shortDescription(element.Description);
+        return temp;
+      });
+      // newData = shortDescription(newData);
+      console.log(newData);
+      resolve(newData.slice(0, 7));
+    });
+  });
+}
+const defaultArea = { CityName: '台灣', City: 'Taiwan' };
 export default {
   name: 'Home',
   components: {
@@ -143,18 +292,30 @@ export default {
       title: 'test',
       scenicspots: [],
       restaurants: [],
+      hotels: [],
+      activities: [],
+      cities,
+      defaultArea,
+      SelectedArea: defaultArea,
+      types,
+      SelectedType: types[0],
+      toggle: 0,
     };
   },
   methods: {},
   computed: {},
   async mounted() {
-    this.scenicspots = await getCities7();
+    this.scenicspots = await getScenicSpot7();
     this.restaurants = await getRestaurants5();
+    this.hotels = await getHotel6();
+    this.activities = await getActivities6();
+    console.log(Object.keys(cities));
   },
 };
 </script>
 
 <style lang="scss" scoped>
+$blue: #a6cde0;
 @mixin shadow {
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
@@ -183,67 +344,241 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
+
+    @media (max-width: 768px) {
+      margin-top: 65px;
+    }
   }
-  .select-container {
-    @include shadow();
+  .bar-container {
+    overflow: hidden;
     position: absolute;
-    bottom: 100px;
-    margin: 20px;
-    background-color: #fff;
+    // bottom: 100px;
+    top: 510px;
+    // margin: 20px;
+
     width: calc(100% - 80px);
     max-width: 600px;
-    height: 80px;
+    // height: 80px;
     border-radius: 20px;
     // display: flex;
     display: inline-flex;
     // justify-content: space-around;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: flex-start;
     $items-height: 40px;
-    gap: 10px;
-    padding: 0 20px;
+    padding: 20px;
 
-    .dropdown,
-    .search {
-      // width: 100%;
-      // max-width: 200px;
-      // height: 40px;
-      // flex-basis: 2fr;
-      width: 100%;
-      flex: 3 1 200px;
-      height: $items-height;
-
-      line-height: $items-height;
-      border-radius: 10px;
-      // background-color: #b4b4b4;
-      background-color: #ebebeb;
-      color: #707070;
-      // padding: 10px;
-      padding-left: 10px;
-      font-size: 18px;
-    }
-    .dropdown {
-      cursor: pointer;
-    }
-    .search {
-      border: 0px;
-      &:focus {
-        outline: none;
+    &.active {
+      padding-bottom: 331px;
+      @media (max-width: 768px) {
+        padding-bottom: 310px;
       }
     }
-    .submit {
-      // width: 100%;
-      // max-width: 100px;
-      // height: 40px;
-      flex: 1 1 70px;
-      height: $items-height;
-      line-height: $items-height;
-      border-radius: 10px;
-      background-color: #e8cb89;
-      color: #fff;
-      text-align: center;
-      cursor: pointer;
-      padding: 0 10px;
+
+    // padding-bottom: 640px;
+    @media (max-width: 768px) {
+      top: 430px;
+    }
+    .bar-wrapper {
+      @include shadow();
+      padding: 20px 20px;
+      border-radius: 20px;
+      background-color: #fff;
+      width: 100%;
+      display: flex;
+      gap: 10px;
+      position: relative;
+      .dropdown,
+      .search {
+        // width: 100%;
+        // max-width: 200px;
+        // height: 40px;
+        // flex-basis: 2fr;
+        width: 100%;
+        flex: 3 1 200px;
+        height: $items-height;
+
+        line-height: $items-height;
+        border-radius: 10px;
+        // background-color: #b4b4b4;
+        background-color: #ebebeb;
+        color: #707070;
+        // padding: 10px;
+        padding-left: 10px;
+        font-size: 18px;
+        z-index: 3;
+        @media (max-width: 768px) {
+        }
+      }
+      .dropdown {
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .search {
+        border: 0px;
+        &:focus {
+          outline: none;
+        }
+      }
+      .submit {
+        // width: 100%;
+        // max-width: 100px;
+        // height: 40px;
+        flex: 1 1 70px;
+        height: $items-height;
+        line-height: $items-height;
+        border-radius: 10px;
+        background-color: #e8cb89;
+        color: #fff;
+        text-align: center;
+        cursor: pointer;
+        padding: 0 10px;
+        z-index: 3;
+        @media (max-width: 768px) {
+          width: 100%;
+          flex: 3 1 200px;
+          padding-left: 10px;
+          padding-right: 0;
+        }
+      }
+      @media (max-width: 768px) {
+        bottom: 0px;
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        // padding: 20px;
+        padding-bottom: 40px;
+      }
+      &::before {
+        background-color: #fff;
+        width: 100%;
+        // height: calc(100% - 20px);
+        height: calc(100% - 20px);
+        border-radius: 20px;
+        // padding-bottom: 20px;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
+    .dropdown-container {
+      display: none;
+      &.active {
+        display: block;
+      }
+      @include shadow();
+      // border: 1px solid;
+      box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+      padding: 0px 20px;
+      padding-bottom: 20px;
+      position: absolute;
+      top: 90px;
+      // left: 0;
+      width: calc(100% - 40px - 40px);
+      background-color: #fff;
+      border-radius: 20px;
+      z-index: 3;
+      h2 {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      button {
+        width: 62px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        border: solid 1px $blue;
+        padding: 10px;
+        border-radius: 10px;
+        height: 40px;
+        cursor: pointer;
+        &:hover,
+        &.active {
+          background-color: $blue;
+          // border: #fff;
+          color: #fff;
+        }
+      }
+      .tabs-container {
+        width: 100%;
+        .radio-container {
+          display: block;
+          width: 100%;
+
+          .cities-container {
+            width: 100%;
+            height: 40px;
+            // padding-top: 20px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            @media (max-width: 768px) {
+              height: 90px;
+            }
+            .cities-slide {
+              display: inline-block;
+              white-space: nowrap;
+
+              position: absolute;
+              top: 0px;
+              left: 0px;
+              transition: all 0.5s;
+              .cities-wrapper {
+                // width: inherit;
+
+                width: 100%;
+                height: 100%;
+                display: inline-flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                p {
+                  display: inline;
+                }
+              }
+            }
+          }
+          label {
+            padding-left: 2px;
+            padding-bottom: 2px;
+            padding-right: 8px;
+            margin-right: 8px;
+            cursor: pointer;
+          }
+          [type='radio'] {
+            display: none;
+          }
+          // [type='radio']:checked ~ label {
+          //   border-bottom: 3px solid $blue;
+          //   z-index: 2;
+          // }
+
+          @for $i from 1 through 10 {
+            input:nth-of-type(#{$i}):checked ~ label:nth-of-type(#{$i}) {
+              border-bottom: 3px solid $blue;
+              z-index: 2;
+            }
+            input:nth-of-type(#{$i}):checked ~ .cities-container .cities-slide {
+              transform: translateX(($i - 1) * -100%);
+            }
+          }
+        }
+      }
+      .type-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .completion-container {
+        border-top: solid 1px #e0e0e0;
+        padding-top: 20px;
+        display: flex;
+        justify-content: flex-end;
+      }
     }
   }
 }
@@ -251,6 +586,35 @@ header {
 .cat-container {
   margin: 40px;
 
+  .bgi {
+    background-size: cover;
+    background-position: center;
+    transition: all 0.5s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    z-index: 0;
+  }
+
+  .time-icon,
+  .address-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 13px;
+    width: 13px;
+    padding-top: 3px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url('../assets/images/icons/time.svg');
+    margin-right: 10px;
+  }
+  .address-icon {
+    background-image: url('../assets/images/icons/site.svg');
+  }
   .scenicspots-container {
     $height: 290px;
     display: flex;
@@ -272,11 +636,32 @@ header {
       display: flex;
       justify-content: center;
       align-items: center;
-
+      position: relative;
+      overflow: hidden;
+      &:hover .bgi {
+        transform: scale(1.2);
+      }
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        z-index: 1;
+        background: linear-gradient(rgba(255, 255, 255, 0), #000);
+        opacity: 0.7;
+        backdrop-filter: grayscale(10%);
+        backdrop-filter: contrast(50%);
+      }
       span {
-        font-size: 30px;
+        z-index: 2;
+        font-size: 16px;
         font-weight: bold;
-        color: #fff;
+        // color: #fff;
+        color: #f8f8f8;
       }
       @media (max-width: 768px) {
         flex-basis: calc(50% - 7px);
@@ -327,9 +712,7 @@ header {
         height: 100%;
         border-radius: 20px;
       }
-      &:hover {
-        // transform: scale(1.2);
-      }
+
       &::before {
         position: absolute;
         left: 0;
@@ -353,8 +736,8 @@ header {
         // display: inline-block;
         // align-self: flex-start;
         display: flex;
-        align-items: center;
-        color: #fff;
+        align-items: flex-start;
+        color: #f8f8f8f8;
         z-index: 2;
         // backdrop-filter: blur(2px);
         // backdrop-filter: grayscale(90%);
@@ -365,21 +748,6 @@ header {
       }
       p {
         margin: 2px 0;
-      }
-      .time-icon,
-      .address-icon {
-        display: inline-flex;
-        flex-shrink: 0;
-        height: 18px;
-        width: 18px;
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-image: url('../assets/images/icons/time.svg');
-        margin-right: 10px;
-      }
-      .address-icon {
-        background-image: url('../assets/images/icons/site.svg');
       }
     }
   }
@@ -396,9 +764,36 @@ header {
       flex: 1 1 400px;
       height: 300px;
       padding: 10px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      overflow: hidden;
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        z-index: 1;
+
+        background: linear-gradient(#000, rgba(255, 255, 255, 0));
+        opacity: 0.7;
+        backdrop-filter: grayscale(10%);
+        backdrop-filter: contrast(50%);
+      }
+      &:hover .bgi {
+        transform: scale(1.2);
+      }
       h2,
       p {
-        // color: #fff;
+        color: #f8f8f8;
+        z-index: 2;
+        display: flex;
+        align-items: flex-start;
       }
       p {
         margin: 2px 0;
@@ -408,27 +803,55 @@ header {
   .activities-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     .activity-item {
       @include shadow();
-      background-color: gray;
+      // background-color: gray;
       flex-basis: 250px;
       width: 100%;
-      padding: 10px;
+      // padding: 10px;
       border-radius: 20px;
       display: flex;
+      position: relative;
 
       .img {
-        height: 100%;
+        // height: 100%;
         flex: 1 1 250px;
         // width: 250px;
-        border-radius: 20px;
+        border-radius: 20px 0px 0px 20px;
+        // background: red;
+        position: relative;
+        overflow: hidden;
+        .bgi {
+          border-radius: 20px 0px 0px 20px;
+        }
       }
       .content {
+        padding: 0 20px;
         flex: 2 1 500px;
         p {
           margin: 2px 0;
         }
+        z-index: 2;
+      }
+      &:hover .img .bgi {
+        transform: scale(1.2);
+      }
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        z-index: 1;
+
+        // background: linear-gradient(#000, rgba(255, 255, 255, 0));
+        opacity: 0.7;
+        backdrop-filter: grayscale(10%);
+        backdrop-filter: contrast(50%);
       }
     }
   }
