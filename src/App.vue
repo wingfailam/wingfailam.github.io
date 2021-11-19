@@ -6,7 +6,12 @@
       </router-link>
     </div>
     <router-view />
-    <footer>TaiwanTravel © 2021 Designer Vum. Front-end Wingfailam. All rights reserved.</footer>
+    <footer>
+      <span>TaiwanTravel © 2021</span>
+      <span>Designer Vum.</span>
+      <span>Front-end Wingfailam.</span>
+      <span>All rights reserved.</span>
+    </footer>
   </div>
 </template>
 
@@ -80,14 +85,25 @@ h2 {
   // }
 }
 footer {
-  height: 70px;
+  // height: 70px;
+  padding: 20px;
   background-color: #a6cde0;
   // color: #f8f8f8;
-  color: #fff;
-  font-family: 'SourceHanSerifTC-VF';
+
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 15px;
+
+  display: flex;
+  gap: 10px;
+  span {
+    color: #fff;
+    font-size: 15px;
+    font-family: 'SourceHanSerifTC-VF';
+    // font-weight: bold;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 </style>
