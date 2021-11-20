@@ -2,7 +2,7 @@
   <div class="bar-container" :class="{ active: toggle == 1 }">
     <div class="bar-wrapper">
       <div class="dropdown" @click="toggle = !toggle">
-        {{ selectedArea.CityName }}
+        {{ selectedAreaZh }}
         /
         {{ selectedType.Zh }}
       </div>
@@ -12,14 +12,14 @@
         placeholder="請輸入關鍵詞"
         v-model="queryString"
       />
-      <router-link :to="{ path: '/' + selectedType.En + '/' + selectedArea.City }">
+      <router-link :to="{ path: '/' + selectedType.En + '/' + selectedCity }">
         <div class="submit">SEARCH</div>
       </router-link>
     </div>
 
     <div class="dropdown-container" :class="{ active: toggle == 1 }">
       <h2>選擇區域</h2>
-      <button @click="selectedArea = defaultArea" :class="{ active: selectedArea == defaultArea }">
+      <button @click="selectedCity = defaultArea" :class="{ active: selectedCity == defaultArea }">
         台灣
       </button>
       <div class="tabs-container">
@@ -70,8 +70,8 @@
                 <button
                   v-for="cts in cities[area].Cities"
                   :key="cts.City"
-                  @click="selectedArea = cts"
-                  :class="{ active: selectedArea == cts }"
+                  @click="selectedCity = cts.City"
+                  :class="{ active: selectedCity == cts.City }"
                 >
                   {{ cts.CityName }}
                 </button>
@@ -103,7 +103,7 @@
 import cities from './Cities';
 import types from './Types';
 
-const defaultArea = { CityName: '台灣', City: 'Taiwan' };
+const defaultArea = 'Taiwan';
 export default {
   name: 'SideSearch',
   data() {
@@ -112,26 +112,33 @@ export default {
       types,
       toggle: 0,
       defaultArea,
-      selectedArea: defaultArea,
+      selectedCity: this.$route.params.city || defaultArea,
       selectedType: types[0],
       queryString: '',
     };
   },
   computed: {
-    getCityByZh(city) {
-      if (city === '台灣') {
-        return '';
+    selectedAreaZh() {
+      if (this.selectedCity === 'Taiwan') {
+        return '台灣';
       }
       let payload = '';
       Object.keys(cities).some((area) => {
-        const result = cities[area].Cities.find((el) => el.CityName === city);
+        const result = cities[area].Cities.find((el) => el.City === this.selectedCity);
         if (result) {
-          payload = result.City;
+          payload = result.CityName;
           return true;
         }
         return false;
       });
       return payload;
+    },
+  },
+  watch: {
+    async $route(to, from) {
+      if (to.params.city !== from.params.city) {
+        this.selectedCity = to.params.city || '';
+      }
     },
   },
 };

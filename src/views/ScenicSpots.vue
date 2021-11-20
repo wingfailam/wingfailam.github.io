@@ -181,6 +181,21 @@ header {
 import SideSearch from '@/components/SideSearch.vue';
 import TdxService from '@/components/TdxService';
 
+// function getCityByZh(city) {
+//   if (city === '台灣') {
+//     return '';
+//   }
+//   let payload = '';
+//   Object.keys(cities).some((area) => {
+//     const result = cities[area].Cities.find((el) => el.CityName === city);
+//     if (result) {
+//       payload = result.City;
+//       return true;
+//     }
+//     return false;
+//   });
+//   return payload;
+// }
 export default {
   components: { SideSearch },
   data() {
