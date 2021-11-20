@@ -27,6 +27,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 h1 {
   font-size: 20px;
@@ -55,6 +56,12 @@ h2 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   // color: #2c3e50;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px;
+  @media (max-width: 768px) {
+    padding-bottom: 160px;
+  }
 }
 
 #nav {
@@ -85,6 +92,9 @@ h2 {
   // }
 }
 footer {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 40px);
   // height: 70px;
   padding: 20px;
   background-color: #a6cde0;
@@ -96,6 +106,7 @@ footer {
 
   display: flex;
   gap: 10px;
+  z-index: -100;
   span {
     color: #fff;
     font-size: 15px;

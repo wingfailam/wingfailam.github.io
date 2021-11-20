@@ -11,7 +11,12 @@
             /
             {{ SelectedType.Zh }}
           </div>
-          <input class="search" name="taiwantravel-search" placeholder="請輸入關鍵詞" />
+          <input
+            class="search"
+            name="taiwantravel-search"
+            placeholder="請輸入關鍵詞"
+            v-model="queryString"
+          />
           <div class="submit">SEARCH</div>
         </div>
 
@@ -117,7 +122,7 @@
           <span> {{ scenicspot.Name }}</span>
         </div>
       </div>
-      <h2>隱藏美食</h2>
+      <h2>美食推薦</h2>
       <div class="restaurants-container">
         <div v-for="restaurant in restaurants" :key="restaurant.id" class="restaurants-item">
           <div
@@ -132,7 +137,7 @@
         </div>
       </div>
 
-      <h2>住宿推薦</h2>
+      <h2>旅宿資訊</h2>
       <div class="hotels-container">
         <div v-for="hotel in hotels" :key="hotel.id" class="hotels-item">
           <div
@@ -145,7 +150,7 @@
           <p class="address"><span class="address-icon"></span>{{ hotel.Address }}</p>
         </div>
       </div>
-      <h2>體驗活動</h2>
+      <h2>節慶活動</h2>
       <div class="activities-container">
         <!-- <div class="activity-item">
           <div class="img"></div>
@@ -300,6 +305,7 @@ export default {
       types,
       SelectedType: types[0],
       toggle: 0,
+      queryString: '',
     };
   },
   methods: {},
@@ -388,6 +394,11 @@ header {
       display: flex;
       gap: 10px;
       position: relative;
+      input {
+        &::placeholder {
+          color: #b0b0b0;
+        }
+      }
       .dropdown,
       .search {
         // width: 100%;
@@ -813,7 +824,9 @@ header {
       border-radius: 20px;
       display: flex;
       position: relative;
-
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
       .img {
         // height: 100%;
         flex: 1 1 250px;
@@ -822,8 +835,14 @@ header {
         // background: red;
         position: relative;
         overflow: hidden;
+        @media (max-width: 768px) {
+          border-radius: 20px 20px 0px 0px;
+        }
         .bgi {
           border-radius: 20px 0px 0px 20px;
+          @media (max-width: 768px) {
+            border-radius: 20px 20px 0px 0px;
+          }
         }
       }
       .content {
@@ -833,6 +852,10 @@ header {
           margin: 2px 0;
         }
         z-index: 2;
+        @media (max-width: 768px) {
+          flex: 2 1 auto;
+          padding-bottom: 20px;
+        }
       }
       &:hover .img .bgi {
         transform: scale(1.2);
