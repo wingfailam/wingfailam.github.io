@@ -30,27 +30,6 @@
             台灣
           </button>
           <div class="tabs-container">
-            <!-- <div class="radio-container">
-              <input
-                type="radio"
-                class="tabs-radio"
-                name="tabs"
-                v-for="(city, index) in Object.keys(cities)"
-                :key="city.id"
-                :id="'tab-' + index"
-                :checked="index == 0"
-              />
-              <div class="label-container">
-                <label
-                  v-for="(city, index) in Object.keys(cities)"
-                  :key="city.id"
-                  :for="'tab-' + index"
-                  class="tabs-label"
-                  :id="'label-' + index"
-                  >{{ cities[city].Zh }}</label
-                >
-              </div>
-            </div> -->
             <div class="radio-container">
               <input
                 type="radio"
@@ -114,68 +93,84 @@
           class="scenicspots-item"
           :class="{ l: index % 3 == 0 }"
         >
-          <div
-            class="bgi"
-            :style="{
-              'background-image': 'url(' + scenicspot.Picture.PictureUrl1 + ')',
+          <router-link
+            :to="{
+              path: '/information/' + 'scenicspot' + '/Taiwan/' + scenicspot.ID,
             }"
-          ></div>
-          <span> {{ scenicspot.Name }}</span>
+          >
+            <div
+              class="bgi"
+              :style="{
+                'background-image': 'url(' + scenicspot.Picture.PictureUrl1 + ')',
+              }"
+            ></div>
+            <span> {{ scenicspot.Name }}</span>
+          </router-link>
         </div>
       </div>
       <h2>美食推薦</h2>
       <div class="restaurants-container">
         <div v-for="restaurant in restaurants" :key="restaurant.id" class="restaurants-item">
-          <div
-            class="bgi"
-            :style="{
-              'background-image': 'url(' + restaurant.Picture.PictureUrl1 + ')',
+          <router-link
+            :to="{
+              path: '/information/' + 'restaurant' + '/Taiwan/' + restaurant.ID,
             }"
-          ></div>
-          <h2 class="title">{{ restaurant.Name }}</h2>
-          <p class="time"><span class="time-icon"></span>{{ restaurant.OpenTime }}</p>
-          <p class="address"><span class="address-icon"></span>{{ restaurant.Address }}</p>
+          >
+            <div
+              class="bgi"
+              :style="{
+                'background-image': 'url(' + restaurant.Picture.PictureUrl1 + ')',
+              }"
+            ></div>
+            <h2 class="title">{{ restaurant.Name }}</h2>
+            <p class="time"><span class="time-icon"></span>{{ restaurant.OpenTime }}</p>
+            <p class="address"><span class="address-icon"></span>{{ restaurant.Address }}</p>
+          </router-link>
         </div>
       </div>
 
       <h2>旅宿資訊</h2>
       <div class="hotels-container">
         <div v-for="hotel in hotels" :key="hotel.id" class="hotels-item">
-          <div
-            class="bgi"
-            :style="{
-              'background-image': 'url(' + hotel.Picture.PictureUrl1 + ')',
+          <router-link
+            :to="{
+              path: '/information/' + 'hotel' + '/Taiwan/' + hotel.ID,
             }"
-          ></div>
-          <h2 class="title">{{ hotel.Name }}</h2>
-          <p class="address"><span class="address-icon"></span>{{ hotel.Address }}</p>
+          >
+            <div
+              class="bgi"
+              :style="{
+                'background-image': 'url(' + hotel.Picture.PictureUrl1 + ')',
+              }"
+            ></div>
+            <h2 class="title">{{ hotel.Name }}</h2>
+            <p class="address"><span class="address-icon"></span>{{ hotel.Address }}</p>
+          </router-link>
         </div>
       </div>
       <h2>節慶活動</h2>
       <div class="activities-container">
-        <!-- <div class="activity-item">
-          <div class="img"></div>
-          <div class="content">
-            <h2 class="title">標題</h2>
-            <p class="date">日期</p>
-            <p class="address">地址</p>
-          </div>
-        </div> -->
         <div v-for="activity in activities" :key="activity.id" class="activity-item">
-          <div class="img">
-            <div
-              class="bgi"
-              :style="{
-                'background-image': 'url(' + activity.Picture.PictureUrl1 + ')',
-              }"
-            ></div>
-          </div>
-          <div class="content">
-            <h2 class="title">{{ activity.Name }}</h2>
-            <p class="address"><span class="address-icon"></span>{{ activity.Address }}</p>
-            <br />
-            <p>{{ activity.Description }}</p>
-          </div>
+          <router-link
+            :to="{
+              path: '/information/' + 'activity' + '/Taiwan/' + activity.ID,
+            }"
+          >
+            <div class="img">
+              <div
+                class="bgi"
+                :style="{
+                  'background-image': 'url(' + activity.Picture.PictureUrl1 + ')',
+                }"
+              ></div>
+            </div>
+            <div class="content">
+              <h2 class="title">{{ activity.Name }}</h2>
+              <p class="address"><span class="address-icon"></span>{{ activity.Address }}</p>
+              <br />
+              <p>{{ activity.Description }}</p>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -329,6 +324,11 @@ export default {
 
 <style lang="scss" scoped>
 $blue: #a6cde0;
+a {
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+}
 @mixin shadow {
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
@@ -616,7 +616,7 @@ header {
     width: 100%;
     height: 100%;
     border-radius: 20px;
-    z-index: 0;
+    z-index: -1;
   }
 
   .time-icon,
@@ -652,16 +652,18 @@ header {
       flex-basis: calc($height / 2 - 10px);
       width: 1fr;
       border-radius: 20px;
-      background-color: grey;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+
       position: relative;
       overflow: hidden;
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       &:hover .bgi {
         transform: scale(1.2);
       }
-      &::before {
+      .bgi::before {
         position: absolute;
         left: 0;
         top: 0;
@@ -700,16 +702,16 @@ header {
     display: flex;
     flex-wrap: wrap;
     // justify-content: space-between;
-    gap: 10px;
+    gap: 15px;
     .restaurants-item {
       cursor: pointer;
       @include shadow();
       border-radius: 20px;
-      height: 350px;
+      height: 450px;
 
       // backdrop-filter: grayscale(30%);
 
-      flex: 1 230px;
+      flex: 1 1 230px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -721,19 +723,7 @@ header {
         overflow: hidden;
         transform: scale(1.2);
       }
-      .bgi {
-        background-size: cover;
-        background-position: center;
-        transition: all 0.5s;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 20px;
-      }
-
-      &::before {
+      .bgi::before {
         position: absolute;
         left: 0;
         top: 0;
@@ -744,12 +734,12 @@ header {
         border-radius: 20px;
         z-index: 1;
 
-        background: linear-gradient(rgba(255, 255, 255, 0), #000);
+        background: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8));
         opacity: 0.7;
         backdrop-filter: grayscale(10%);
         backdrop-filter: contrast(50%);
 
-        // opacity: 1;
+        opacity: 1;
       }
       h2,
       p {
@@ -774,12 +764,10 @@ header {
   .hotels-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 15px;
 
     .hotels-item {
       @include shadow();
-
-      background-color: gray;
       border-radius: 20px;
       flex: 1 1 400px;
       height: 300px;
@@ -789,7 +777,8 @@ header {
       flex-direction: column;
 
       overflow: hidden;
-      &::before {
+
+      .bgi::before {
         position: absolute;
         left: 0;
         top: 0;
@@ -823,27 +812,40 @@ header {
   .activities-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     .activity-item {
       @include shadow();
       // background-color: gray;
-      flex-basis: 250px;
+      // flex-basis: 250px;
+      height: 250px;
       width: 100%;
       // padding: 10px;
       border-radius: 20px;
-      display: flex;
-      position: relative;
       @media (max-width: 768px) {
-        flex-direction: column;
+        height: auto;
       }
+
+      a {
+        border-radius: 20px;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        @media (max-width: 768px) {
+          flex-direction: column;
+        }
+      }
+
       .img {
         // height: 100%;
-        flex: 1 1 250px;
+        flex: 1 0 250px;
         // width: 250px;
+        width: 100%;
+        height: 100%;
         border-radius: 20px 0px 0px 20px;
         // background: red;
         position: relative;
         overflow: hidden;
+        position: relative;
         @media (max-width: 768px) {
           border-radius: 20px 20px 0px 0px;
         }
@@ -852,6 +854,22 @@ header {
           @media (max-width: 768px) {
             border-radius: 20px 20px 0px 0px;
           }
+        }
+        &::before {
+          position: absolute;
+          left: 0;
+          top: 0;
+          content: '';
+          display: block;
+          width: 100%;
+          height: 100%;
+          border-radius: 20px 0 0 20px;
+          z-index: 1;
+
+          // background: linear-gradient(#000, rgba(255, 255, 255, 0));
+          opacity: 0.7;
+          backdrop-filter: grayscale(10%);
+          backdrop-filter: contrast(50%);
         }
       }
       .content {
@@ -868,22 +886,6 @@ header {
       }
       &:hover .img .bgi {
         transform: scale(1.2);
-      }
-      &::before {
-        position: absolute;
-        left: 0;
-        top: 0;
-        content: '';
-        display: block;
-        width: 100%;
-        height: 100%;
-        border-radius: 20px;
-        z-index: 1;
-
-        // background: linear-gradient(#000, rgba(255, 255, 255, 0));
-        opacity: 0.7;
-        backdrop-filter: grayscale(10%);
-        backdrop-filter: contrast(50%);
       }
     }
   }

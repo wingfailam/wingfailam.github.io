@@ -25,36 +25,50 @@
           </button>
         </span>
       </div>
+
       <div class="results-wrapper" v-for="result in selectedResults" :key="result.id">
-        <div class="results-img-container">
-          <div
-            class="results-img"
-            :style="{ 'background-image': 'url(' + result.Picture.PictureUrl1 + ')' }"
-          ></div>
-        </div>
-        <div class="results-content-container">
-          <h3>{{ result.Name }}</h3>
-          <!-- <p>{{ result.OpenTime }}</p> -->
-          <!-- <p>{{ result.TicketInfo }}</p> -->
-          <p v-if="result.Address"><span class="icon-address"></span>{{ result.Address }}</p>
-        </div>
+        <router-link
+          :to="{ path: '/information/' + selectedType + '/' + selectedCity + '/' + result.ID }"
+        >
+          <div class="results-img-container">
+            <div
+              class="results-img"
+              :style="{ 'background-image': 'url(' + result.Picture.PictureUrl1 + ')' }"
+            ></div>
+          </div>
+          <div class="results-content-container">
+            <h3>{{ result.Name }}</h3>
+            <!-- <p>{{ result.OpenTime }}</p> -->
+            <!-- <p>{{ result.TicketInfo }}</p> -->
+            <p v-if="result.Address"><span class="icon-address"></span>{{ result.Address }}</p>
+          </div>
+        </router-link>
       </div>
 
       <div class="pagination">
-        <router-link :to="{ path: './?page=' + (selectedPage - 1) }" v-if="selectedPage - 1 > 0">
+        <router-link
+          :to="{ path: './' + queryString + '?page=' + (selectedPage - 1) }"
+          v-if="selectedPage - 1 > 0"
+        >
           <button class="page-button prev-page" v-if="selectedPage - 1 > 0"></button>
         </router-link>
-        <router-link :to="{ path: './?page=' + 1 }" v-if="selectedPage - 3 > 0">
+        <router-link :to="{ path: './' + queryString + '?page=' + 1 }" v-if="selectedPage - 3 > 0">
           <button class="page-button first-page">1</button>
         </router-link>
         <span v-if="selectedPage - 3 > 0">...</span>
 
-        <router-link :to="{ path: './?page=' + (selectedPage - 2) }" v-if="selectedPage - 2 > 0">
+        <router-link
+          :to="{ path: './' + queryString + '?page=' + (selectedPage - 2) }"
+          v-if="selectedPage - 2 > 0"
+        >
           <button class="page-button left-2">
             {{ selectedPage - 2 }}
           </button>
         </router-link>
-        <router-link :to="{ path: './?page=' + (selectedPage - 1) }" v-if="selectedPage - 1 > 0">
+        <router-link
+          :to="{ path: './' + queryString + '?page=' + (selectedPage - 1) }"
+          v-if="selectedPage - 1 > 0"
+        >
           <button class="page-button left-1">
             {{ selectedPage - 1 }}
           </button>
@@ -62,12 +76,12 @@
 
         <button class="page-button selected-page" v-if="lastPage !== 1">{{ selectedPage }}</button>
 
-        <router-link :to="{ path: './?page=' + (selectedPage + 1) }">
+        <router-link :to="{ path: './' + queryString + '?page=' + (selectedPage + 1) }">
           <button class="page-button right-1" v-if="selectedPage + 1 <= lastPage">
             {{ selectedPage + 1 }}
           </button>
         </router-link>
-        <router-link :to="{ path: './?page=' + (selectedPage + 2) }">
+        <router-link :to="{ path: './' + queryString + '?page=' + (selectedPage + 2) }">
           <button class="page-button right-2" v-if="selectedPage + 2 <= lastPage">
             {{ selectedPage + 2 }}
           </button>
@@ -75,12 +89,12 @@
 
         <span v-if="selectedPage + 3 <= lastPage">...</span>
 
-        <router-link :to="{ path: './?page=' + lastPage }">
+        <router-link :to="{ path: './' + queryString + '?page=' + lastPage }">
           <button class="page-button last-page" v-if="selectedPage + 2 < lastPage">
             {{ lastPage }}
           </button>
         </router-link>
-        <router-link :to="{ path: './?page=' + (selectedPage + 1) }">
+        <router-link :to="{ path: './' + queryString + '?page=' + (selectedPage + 1) }">
           <button class="page-button next-page" v-if="selectedPage + 1 < lastPage"></button>
         </router-link>
       </div>
@@ -229,8 +243,14 @@ header {
       border-radius: 20px;
       width: 100%;
       height: 250px;
+      overflow: hidden;
+      border-radius: 20px 20px 0 0;
+      &:hover .results-img {
+        transform: scale(1.2);
+      }
 
       .results-img {
+        transition: all 0.5s;
         border-radius: 20px 20px 0 0;
         width: 100%;
         height: 100%;
