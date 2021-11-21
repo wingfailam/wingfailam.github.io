@@ -1,30 +1,36 @@
 <template>
-  <div class="bar-container" :class="{ active: toggle == 1 }">
-    <div class="bar-wrapper">
-      <div class="dropdown" @click="toggle = !toggle">
-        {{ selectedCityZh }}
-        /
-        {{ selectedTypeZh }}
-      </div>
-      <input
-        class="search"
-        name="taiwantravel-search"
-        placeholder="請輸入關鍵詞"
-        v-model="queryString"
-        @keypress="enterClicked()"
-      />
-      <router-link :to="{ path: '/' + selectedType + '/' + selectedCity + '/' + queryString }">
-        <div class="submit">SEARCH</div>
-      </router-link>
-    </div>
+  <div class="background-container">
+    <button class="close" @click="closeSearch()">x</button>
 
-    <div class="dropdown-container" :class="{ active: toggle == 1 }">
-      <h2>選擇區域</h2>
-      <button @click="selectedCity = defaultCity" :class="{ active: selectedCity == defaultCity }">
-        台灣
-      </button>
-      <div class="tabs-container">
-        <!-- <div class="radio-container">
+    <div class="bar-container" :class="{ active: toggle == 1 }">
+      <div class="bar-wrapper">
+        <div class="dropdown" @click="toggle = !toggle">
+          {{ selectedCityZh }}
+          /
+          {{ selectedTypeZh }}
+        </div>
+        <input
+          class="search"
+          name="taiwantravel-search"
+          placeholder="請輸入關鍵詞"
+          v-model="queryString"
+          @keypress="enterClicked()"
+        />
+        <router-link :to="{ path: '/' + selectedType + '/' + selectedCity + '/' + queryString }">
+          <div class="submit">SEARCH</div>
+        </router-link>
+      </div>
+
+      <div class="dropdown-container" :class="{ active: toggle == 1 }">
+        <h2>選擇區域</h2>
+        <button
+          @click="selectedCity = defaultCity"
+          :class="{ active: selectedCity == defaultCity }"
+        >
+          台灣
+        </button>
+        <div class="tabs-container">
+          <!-- <div class="radio-container">
               <input
                 type="radio"
                 class="tabs-radio"
@@ -45,56 +51,57 @@
                 >
               </div>
             </div> -->
-        <div class="radio-container">
-          <input
-            type="radio"
-            class="tabs-radio"
-            name="tabs"
-            v-for="(city, index) in Object.keys(cities)"
-            :key="city.id"
-            :id="'tab-' + index"
-            :checked="index == 0"
-          />
+          <div class="radio-container">
+            <input
+              type="radio"
+              class="tabs-radio"
+              name="tabs"
+              v-for="(city, index) in Object.keys(cities)"
+              :key="city.id"
+              :id="'tab-' + index"
+              :checked="index == 0"
+            />
 
-          <label
-            v-for="(city, index) in Object.keys(cities)"
-            :key="city.id"
-            :for="'tab-' + index"
-            class="tabs-label"
-            :id="'label-' + index"
-            >{{ cities[city].Zh }}</label
-          >
-          <div class="cities-container">
-            <div class="cities-slide">
-              <div class="cities-wrapper" v-for="area in Object.keys(cities)" :key="area.id">
-                <!-- <p>{{ cities[area].Zh }}</p> -->
-                <button
-                  v-for="cts in cities[area].Cities"
-                  :key="cts.City"
-                  @click="selectedCity = cts.City"
-                  :class="{ active: selectedCity == cts.City }"
-                >
-                  {{ cts.CityName }}
-                </button>
+            <label
+              v-for="(city, index) in Object.keys(cities)"
+              :key="city.id"
+              :for="'tab-' + index"
+              class="tabs-label"
+              :id="'label-' + index"
+              >{{ cities[city].Zh }}</label
+            >
+            <div class="cities-container">
+              <div class="cities-slide">
+                <div class="cities-wrapper" v-for="area in Object.keys(cities)" :key="area.id">
+                  <!-- <p>{{ cities[area].Zh }}</p> -->
+                  <button
+                    v-for="cts in cities[area].Cities"
+                    :key="cts.City"
+                    @click="selectedCity = cts.City"
+                    :class="{ active: selectedCity == cts.City }"
+                  >
+                    {{ cts.CityName }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <h2>選擇類型</h2>
-      <div class="type-container">
-        <button
-          v-for="type in types"
-          :key="type.En"
-          @click="selectedType = type.En"
-          :class="{ active: selectedType == type.En }"
-        >
-          {{ type.Zh }}
-        </button>
-      </div>
+        <h2>選擇類型</h2>
+        <div class="type-container">
+          <button
+            v-for="type in types"
+            :key="type.En"
+            @click="selectedType = type.En"
+            :class="{ active: selectedType == type.En }"
+          >
+            {{ type.Zh }}
+          </button>
+        </div>
 
-      <div class="completion-container">
-        <button class="active" @click="toggle = !toggle">OK</button>
+        <div class="completion-container">
+          <button class="active" @click="toggle = !toggle">OK</button>
+        </div>
       </div>
     </div>
   </div>
@@ -106,7 +113,7 @@ import types from './Types';
 
 const defaultCity = 'Taiwan';
 export default {
-  name: 'SideSearch',
+  name: 'SideSearchRWD',
   data() {
     return {
       cities,
@@ -142,11 +149,17 @@ export default {
     enterClicked() {
       this.$router.push(`/${this.selectedType}/${this.selectedCity}/${this.queryString}`);
     },
+    closeSearch() {
+      this.$emit('close-search');
+    },
   },
   watch: {
     async $route(to, from) {
+      console.log(to, from);
+      this.queryString = '';
+      this.closeSearch();
       if (to.params.city !== from.params.city) {
-        this.selectedCity = to.params.city || '';
+        this.selectedCity = to.params.city || 'Taiwan';
       }
       if (to.params.category !== from.params.cicategoryty) {
         this.selectedType = to.params.category || '';
@@ -158,6 +171,31 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.background-container {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  &.active {
+    left: 0;
+  }
+  .close {
+    position: absolute;
+    right: 10px;
+    top: 80px;
+    color: #505050;
+    z-index: 6;
+    width: 35px;
+    height: 30px;
+    border-radius: 10px;
+    border: 0px;
+    background-color: #fff;
+    font-size: 20px;
+    line-height: 20px;
+  }
+}
 $blue: #a6cde0;
 * {
   // border: solid 1px;
@@ -169,8 +207,11 @@ $blue: #a6cde0;
 .bar-container {
   @include shadow();
   overflow: hidden;
-  position: relative;
-  width: calc(100%);
+  position: absolute;
+  left: 0;
+  top: 100px;
+  width: calc(100% - 40px);
+
   // max-width: 320px;
 
   border-radius: 20px;
@@ -182,10 +223,15 @@ $blue: #a6cde0;
   justify-content: space-evenly;
   transition: all 0.5s;
   &.active {
-    padding-bottom: 340px;
     box-shadow: -2px -2px 50px 1px rgba(0, 0, 0, 0.2);
     @media (max-width: 768px) {
       // padding-bottom: 300px;
+    }
+    .bar-wrapper {
+      transition: all 0.5s;
+      @media (max-width: 768px) {
+        padding-bottom: 300px;
+      }
     }
   }
   .bar-wrapper {
@@ -201,6 +247,7 @@ $blue: #a6cde0;
     display: flex;
     gap: 10px;
     position: relative;
+
     input {
       &::placeholder {
         color: #b0b0b0;

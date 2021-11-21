@@ -1,6 +1,15 @@
 <template>
   <div id="app">
     <div id="nav">
+      <h1 class="hamburger" @click="toggleSideSearchRWD = !toggleSideSearchRWD">☰</h1>
+      <!-- <div class="side-search-container" :class="{ active: toggleSideSearchRWD }">
+      </div> -->
+
+      <SideSearchRWD
+        class="nav-side-search"
+        :class="{ active: toggleSideSearchRWD == 1 }"
+        @close-search="toggleSideSearchRWD = 0"
+      />
       <router-link to="/">
         <h1>TAIWAN TRAVEL</h1>
       </router-link>
@@ -14,8 +23,74 @@
     </footer>
   </div>
 </template>
+<script>
+import SideSearchRWD from '@/components/SideSearchRWD.vue';
+
+export default {
+  components: { SideSearchRWD },
+  data() {
+    return {
+      toggleSideSearchRWD: 0,
+    };
+  },
+};
+</script>
 
 <style lang="scss">
+$blue: #a6cde0;
+.side-search-container {
+  // // display: none;
+  // position: fixed;
+  // left: -100%;
+  // // left: 0;
+  // transition: all 0.5s;
+  // &.active {
+  //   left: 0;
+  // }
+  // // top: +100%;
+  // top: 0;
+  // background-color: rgba(0, 0, 0, 0.5);
+  // z-index: 100;
+  // width: 100%;
+  // // height: calc(100vh - 100%);
+  // height: 100vh;
+  // padding-bottom: 0px;
+  // .close {
+  //   // position: fixed;
+  //   position: absolute;
+  //   right: 20px;
+  //   top: 75px;
+  //   width: 40px;
+  //   height: 30px;
+  //   border: 0px;
+  //   border-radius: 12px;
+  //   font-size: 20px;
+  //   line-height: 20px;
+  //   background-color: #fff;
+  //   color: #808080;
+  // }
+  // .bar-container.nav-side-search {
+  //   // position: fixed;
+  //   position: absolute;
+  //   top: 100px;
+  //   left: 0;
+  //   right: 0;
+  //   width: calc(100% - 40px);
+  //   // height: 80vh;
+  //   z-index: 5;
+
+  //   &.active {
+  //     .bar-wrapper {
+  //       transition: all 0.5s;
+  //       padding-bottom: 300px;
+  //     }
+  //   }
+  // }
+}
+.background-container.nav-side-search.active {
+  z-index: 5;
+}
+
 * {
   color: #505050;
   text-decoration: none;
@@ -70,6 +145,20 @@ h2 {
   left: 0;
   width: calc(100% - 40px);
   padding: 20px;
+  // position: relative;
+  .hamburger {
+    display: none;
+    @media (max-width: 768px) {
+      display: block;
+      font-size: 30px;
+      line-height: 21px;
+    }
+  }
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+  }
 
   h1 {
     font-family: 'SourceHanSerifTC-VF';

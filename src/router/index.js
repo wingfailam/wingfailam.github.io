@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+// import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -8,24 +8,23 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    // component: Home,
+    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
   },
   {
-    path: '/scenicspots',
-    name: 'ScenicSpots',
-    redirect: '/scenicspots/Taiwan',
+    path: '/:category',
+    name: 'scenicspot',
+    redirect: '/scenicspot/Taiwan',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ScenicSpots.vue'),
+
+    component: () => import(/* webpackChunkName: "about" */ '../components/Categories.vue'),
   },
   {
-    path: '/scenicspots/:city',
-    name: 'ScenicSpots',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ScenicSpots.vue'),
+    path: '/:category/:city/:q?',
+    name: 'scenicspot',
+    component: () => import(/* webpackChunkName: "about" */ '../components/Categories.vue'),
   },
 ];
 

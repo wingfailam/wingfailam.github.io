@@ -7,24 +7,25 @@
       <div class="bar-container" :class="{ active: toggle == 1 }">
         <div class="bar-wrapper">
           <div class="dropdown" @click="toggle = !toggle">
-            {{ SelectedArea.CityName }}
+            {{ selectedCity.CityName }}
             /
-            {{ SelectedType.Zh }}
+            {{ selectedType.Zh }}
           </div>
           <input
             class="search"
             name="taiwantravel-search"
             placeholder="請輸入關鍵詞"
             v-model="queryString"
+            @keypress="enterClicked()"
           />
-          <div class="submit">SEARCH</div>
+          <div class="submit" @click="enterClicked()">SEARCH</div>
         </div>
 
         <div class="dropdown-container" :class="{ active: toggle == 1 }">
           <h2>選擇區域</h2>
           <button
-            @click="SelectedArea = defaultArea"
-            :class="{ active: SelectedArea == defaultArea }"
+            @click="selectedCity = defaultCity"
+            :class="{ active: selectedCity == defaultCity }"
           >
             台灣
           </button>
@@ -76,8 +77,8 @@
                     <button
                       v-for="cts in cities[area].Cities"
                       :key="cts.City"
-                      @click="SelectedArea = cts"
-                      :class="{ active: SelectedArea == cts }"
+                      @click="selectedCity = cts"
+                      :class="{ active: selectedCity == cts }"
                     >
                       {{ cts.CityName }}
                     </button>
@@ -91,8 +92,8 @@
             <button
               v-for="type in types"
               :key="type.En"
-              @click="SelectedType = type"
-              :class="{ active: SelectedType == type }"
+              @click="selectedType = type"
+              :class="{ active: selectedType == type }"
             >
               {{ type.Zh }}
             </button>
@@ -286,7 +287,7 @@ function getActivities6() {
     });
   });
 }
-const defaultArea = { CityName: '台灣', City: 'Taiwan' };
+const defaultCity = { CityName: '台灣', City: 'Taiwan' };
 export default {
   name: 'Home',
   components: {
@@ -300,15 +301,19 @@ export default {
       hotels: [],
       activities: [],
       cities,
-      defaultArea,
-      SelectedArea: defaultArea,
+      defaultCity,
+      selectedCity: defaultCity,
       types,
-      SelectedType: types[0],
+      selectedType: types[0],
       toggle: 0,
       queryString: '',
     };
   },
-  methods: {},
+  methods: {
+    enterClicked() {
+      this.$router.push(`/${this.selectedType.En}/${this.selectedCity.City}/${this.queryString}`);
+    },
+  },
   computed: {},
   async mounted() {
     this.scenicspots = await getScenicSpot7();
@@ -316,6 +321,8 @@ export default {
     this.hotels = await getHotel6();
     this.activities = await getActivities6();
     console.log(Object.keys(cities));
+    console.log(this.defaultCity);
+    console.log(this.selectedCity);
   },
 };
 </script>
@@ -352,7 +359,7 @@ header {
     background-size: contain;
 
     @media (max-width: 768px) {
-      margin-top: 65px;
+      margin-top: 70px;
     }
   }
   .bar-container {
@@ -373,7 +380,9 @@ header {
     align-items: flex-start;
     $items-height: 40px;
     padding: 20px;
-
+    @media (max-width: 768px) {
+      display: none;
+    }
     &.active {
       padding-bottom: 331px;
       @media (max-width: 768px) {

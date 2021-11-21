@@ -1,9 +1,30 @@
 <template>
-  <div class="scenicspots-container">
-    <header></header>
-    <SideSearch class="sideSearch" />
+  <div class="categories-container">
+    <header :class="selectedType"></header>
+    <SideSearch class="SideSearch" />
 
     <div class="results-container">
+      <div class="results-header">
+        <div class="title">
+          <h2>{{ selectedCityZh }}</h2>
+          <p>{{ '/ ' + queryString }}</p>
+        </div>
+
+        <span class="buttons-container">
+          <!-- <button>{{ selectedTypeZh }}</button> -->
+          <button
+            v-for="type in types"
+            :key="type.En"
+            @click="
+              selectedType = type.En;
+              $router.push(`/${selectedType}/${selectedCity}/${queryString}`);
+            "
+            :class="{ active: selectedType == type.En }"
+          >
+            {{ type.Zh }}
+          </button>
+        </span>
+      </div>
       <div class="results-wrapper" v-for="result in selectedResults" :key="result.id">
         <div class="results-img-container">
           <div
@@ -20,33 +41,34 @@
       </div>
 
       <div class="pagination">
-        <button class="page-button prev-page" v-if="selectedPage - 1 > 0"></button>
-
+        <router-link :to="{ path: './?page=' + (selectedPage - 1) }" v-if="selectedPage - 1 > 0">
+          <button class="page-button prev-page" v-if="selectedPage - 1 > 0"></button>
+        </router-link>
         <router-link :to="{ path: './?page=' + 1 }" v-if="selectedPage - 3 > 0">
           <button class="page-button first-page">1</button>
         </router-link>
         <span v-if="selectedPage - 3 > 0">...</span>
 
         <router-link :to="{ path: './?page=' + (selectedPage - 2) }" v-if="selectedPage - 2 > 0">
-          <button class="page-button last-page">
+          <button class="page-button left-2">
             {{ selectedPage - 2 }}
           </button>
         </router-link>
         <router-link :to="{ path: './?page=' + (selectedPage - 1) }" v-if="selectedPage - 1 > 0">
-          <button class="page-button last-page">
+          <button class="page-button left-1">
             {{ selectedPage - 1 }}
           </button>
         </router-link>
 
-        <button class="page-button selected-page">{{ selectedPage }}</button>
+        <button class="page-button selected-page" v-if="lastPage !== 1">{{ selectedPage }}</button>
 
         <router-link :to="{ path: './?page=' + (selectedPage + 1) }">
-          <button class="page-button last-page" v-if="selectedPage + 1 <= lastPage">
+          <button class="page-button right-1" v-if="selectedPage + 1 <= lastPage">
             {{ selectedPage + 1 }}
           </button>
         </router-link>
         <router-link :to="{ path: './?page=' + (selectedPage + 2) }">
-          <button class="page-button last-page" v-if="selectedPage + 2 <= lastPage">
+          <button class="page-button right-2" v-if="selectedPage + 2 <= lastPage">
             {{ selectedPage + 2 }}
           </button>
         </router-link>
@@ -58,42 +80,126 @@
             {{ lastPage }}
           </button>
         </router-link>
-        <button class="page-button next-page" v-if="selectedPage + 1 < lastPage"></button>
+        <router-link :to="{ path: './?page=' + (selectedPage + 1) }">
+          <button class="page-button next-page" v-if="selectedPage + 1 < lastPage"></button>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
+$blue: #a6cde0;
 * {
   //   border: 1px solid;
+}
+#nav {
+  background-color: #fff;
 }
 @mixin shadow {
   box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
-.scenicspots-container {
+.categories-container {
   //   background-color: #000;
   //   min-height: 100vh;
   //   display: flex;
 }
 header {
-  background-image: url(../assets/images/ScenicSpotsHeader.jpg);
   height: 200px;
   width: 100%;
   background-position: center;
   background-size: cover;
+  &.scenicspot {
+    background-image: url(../assets/images/scenicspot-header.jpg);
+  }
+  &.restaurant {
+    background-image: url(../assets/images/restaurant-header.jpg);
+  }
+  &.hotel {
+    background-image: url(../assets/images/hotel-header.jpg);
+  }
+  &.activity {
+    background-image: url(../assets/images/activity-header.jpg);
+  }
 }
-.sideSearch {
+.bar-container.SideSearch {
   position: fixed;
   top: 140px;
+  width: 320px;
+  @media (max-width: 768px) {
+    // position: absolute;
+    // left: -100%;
+    display: none;
+  }
 }
 .results-container {
-  margin-top: 40px;
+  margin-top: 20px;
   margin-left: 400px;
   margin-right: 80px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
+  @media (max-width: 768px) {
+    margin: 0;
+    padding: 20px;
+  }
+  .results-header {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: flex-end;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    .title {
+      display: block;
+      h2 {
+        font-family: 'SourceHanSerifTC-VF';
+        font-size: 40px;
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+        margin-right: 5px;
+        @media (max-width: 768px) {
+          font-size: 25px;
+        }
+        display: inline;
+      }
+      p {
+        display: inline;
+        font-family: 'SourceHanSerifTC-VF';
+        // font-weight: bold;
+        margin: 0;
+        margin-right: 12px;
+        // line-height: 50px;
+        // margin: 0;
+        // margin-bottom: 0px;
+      }
+    }
+    .buttons-container {
+      display: flex;
+      gap: 10px;
+      button {
+        width: 50px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        border: solid 1px $blue;
+        padding: 5px;
+        border-radius: 10px;
+        height: 35px;
+        cursor: pointer;
+        &:hover,
+        &.active {
+          background-color: $blue;
+          // border: #fff;
+          color: #fff;
+        }
+      }
+    }
+  }
   .results-wrapper {
     display: flex;
     flex: 1 1 250px;
@@ -139,6 +245,7 @@ header {
     align-items: start;
     justify-content: flex-end;
     gap: 10px;
+
     span {
       width: 20px;
       height: 40px;
@@ -162,10 +269,19 @@ header {
         background-color: $blue;
         color: #fff;
       }
+      &.left-2,
+      &.right-2 {
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
       &.next-page,
       &.prev-page {
         border-radius: 0px;
         border: 0px;
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
       &.prev-page {
         background-image: url(../assets/images/icons/arrowWithBorderLeft_default.svg);
@@ -180,6 +296,8 @@ header {
 <script>
 import SideSearch from '@/components/SideSearch.vue';
 import TdxService from '@/components/TdxService';
+import types from '@/components/Types';
+import cities from '@/components/Cities';
 
 // function getCityByZh(city) {
 //   if (city === '台灣') {
@@ -204,16 +322,42 @@ export default {
       results: [],
       selectedResults: [],
       perPage: 24,
-      lastPage: 0,
+      lastPage: 1,
+      selectedType: this.$route.params.category || 'scenicspot',
       selectedPage: parseInt(this.$route.query.page, 10) || 1,
       selectedCity: this.$route.params.city || '',
+      queryString: this.$route.params.q || '',
+      types,
     };
   },
-  computed: {},
+  computed: {
+    selectedCityZh() {
+      if (this.selectedCity === 'Taiwan') {
+        return '台灣';
+      }
+      let payload = '';
+      Object.keys(cities).some((area) => {
+        const result = cities[area].Cities.find((el) => el.City === this.selectedCity);
+        if (result) {
+          payload = result.CityName;
+          return true;
+        }
+        return false;
+      });
+      return payload;
+    },
+    selectedTypeZh() {
+      return types.find((el) => el.En === this.selectedType).Zh;
+    },
+  },
   methods: {
     async getResult() {
-      this.results = await TdxService.getScenicSpot(this.selectedCity);
-      this.lastPage = Math.ceil(this.results.length / this.perPage);
+      this.results = await TdxService.getAny(
+        this.selectedType,
+        this.selectedCity,
+        this.queryString,
+      );
+      this.lastPage = Math.ceil(this.results.length / this.perPage) || 1;
     },
     setResult() {
       this.selectedResults = this.results.slice(
@@ -233,11 +377,19 @@ export default {
   watch: {
     async $route(to, from) {
       // react to route changes...
+
       console.log(to, from);
-      if (to.params.city !== from.params.city) {
+      // city 變動
+      if (to.params.city !== from.params.city || to.params.category !== from.params.category) {
         this.selectedCity = to.params.city || '';
         await this.getResult();
       }
+      // q變動
+      if (to.params.q !== from.params.q) {
+        this.queryString = to.params.q || '';
+        await this.getResult();
+      }
+      // 單純換頁
       this.selectedPage = parseInt(this.$route.query.page, 10) || 1;
       this.setResult();
     },

@@ -16,13 +16,33 @@ function getAuthorizationHeader() {
 }
 
 const TdxService = {
-  getScenicSpot(city) {
+  getScenicSpot(city, keyword) {
     let computedCity = city;
+    let computedQueryString = '';
+    if (keyword) computedQueryString = ` and contains(Name,'${keyword}')`;
     if (city === 'Taiwan') computedCity = '';
     return new Promise((resolve) => {
-      const api = `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot/${computedCity}?`
-        + '$filter=Picture%2FPictureUrl1%20ne%20null&'
-        + '$format=JSON';
+      const api = `${
+        `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot/${computedCity}?`
+        + '$filter=Picture%2FPictureUrl1%20ne%20null'
+      }${computedQueryString}&$format=JSON`;
+      return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
+        // const newData = _.shuffle(response.data);
+        // console.log(newData);
+        resolve(response.data);
+      });
+    });
+  },
+  getAny(category, city, keyword) {
+    let computedCity = city;
+    let computedQueryString = '';
+    if (keyword) computedQueryString = ` and contains(Name,'${keyword}') or contains(Description,'${keyword}')`;
+    if (city === 'Taiwan') computedCity = '';
+    return new Promise((resolve) => {
+      const api = `${
+        `https://ptx.transportdata.tw/MOTC/v2/Tourism/${category}/${computedCity}?`
+        + '$filter=Picture%2FPictureUrl1%20ne%20null'
+      }${computedQueryString}&$format=JSON`;
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
         // const newData = _.shuffle(response.data);
         // console.log(newData);
