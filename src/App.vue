@@ -38,6 +38,10 @@ export default {
 
 <style lang="scss">
 $blue: #a6cde0;
+.swiper-pagination-bullet {
+  background: #fff !important;
+}
+
 .side-search-container {
   // // display: none;
   // position: fixed;

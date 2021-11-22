@@ -34,16 +34,38 @@
             </div>
           </div>
         </div>
-        <div
-          class="images"
-          :style="{ 'background-image': 'url(' + detail.Picture.PictureUrl1 + ')' }"
-        ></div>
+        <div class="images">
+          <div class="my-swiper-container">
+            <swiper class="swiper" :options="swiperOption">
+              <swiper-slide
+                v-if="detail.Picture.PictureUrl1"
+                class="swiper-img"
+                :style="{ 'background-image': 'url(' + detail.Picture.PictureUrl1 + ')' }"
+              ></swiper-slide>
+              <swiper-slide
+                v-if="detail.Picture.PictureUrl2"
+                class="swiper-img"
+                :style="{ 'background-image': 'url(' + detail.Picture.PictureUrl2 + ')' }"
+              ></swiper-slide>
+              <swiper-slide
+                v-if="detail.Picture.PictureUrl3"
+                class="swiper-img"
+                :style="{ 'background-image': 'url(' + detail.Picture.PictureUrl3 + ')' }"
+              ></swiper-slide>
+
+              <div class="swiper-pagination" slot="pagination"></div>
+              <div class="swiper-button-prev" slot="button-prev"></div>
+              <div class="swiper-button-next" slot="button-next"></div>
+            </swiper>
+          </div>
+        </div>
       </div>
       <div class="sub">
         <h3 v-if="detail.DescriptionDetail">景點介紹</h3>
         <pre v-if="detail.DescriptionDetail">{{
           detail.DescriptionDetail.replaceAll(['。'], '。\n\n')
         }}</pre>
+
         <div class="nearby-title">
           <router-link
             :to="{
@@ -149,7 +171,7 @@
               ></div>
               <div class="content">
                 <h2 class="title">{{ hotel.Name }}</h2>
-                <p class="address"><span class="address-icon"></span>{{ hotel.Address }}</p>
+                <p class="address"><span class="icon icon-address"></span>{{ hotel.Address }}</p>
               </div>
             </router-link>
           </div>
@@ -185,7 +207,7 @@
               </div>
               <div class="content">
                 <h2 class="title">{{ activity.Name }}</h2>
-                <p class="address"><span class="address-icon"></span>{{ activity.Address }}</p>
+                <p class="address"><span class="icon icon-address"></span>{{ activity.Address }}</p>
                 <br />
                 <p>{{ shortDescription(activity.Description) }}</p>
               </div>
@@ -197,9 +219,20 @@
   </div>
 </template>
 <script>
+import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
 import tdxService from './TdxService';
 
+// import style (<= Swiper 5.x)
+import 'swiper/css/swiper.css';
+
 export default {
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  directives: {
+    swiper: directive,
+  },
   data() {
     return {
       sample: null,
@@ -208,9 +241,31 @@ export default {
       nearbyRestaurant: null,
       nearbyHotel: null,
       nearbyActivity: null,
+      swiperOption: {
+        spaceBetween: 30,
+        centeredSlides: true,
+        loop: true,
+        speed: 1500,
+        autoplay: {
+          delay: 3000,
+
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      },
     };
   },
   methods: {
+    swiper() {
+      return this.$refs.mySwiper.$swiper;
+    },
     shortDescription(description) {
       let temp;
       const num = 100;
@@ -251,6 +306,7 @@ export default {
   async mounted() {
     await this.getDetail();
     this.getNearbyAll();
+    this.swiper.slideTo(3, 1000, false);
   },
 };
 </script>
@@ -271,6 +327,30 @@ h3 {
   span {
   }
 }
+.my-swiper-container {
+  height: 100%;
+  width: 100%;
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: #fff;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  .swiper-container,
+  .wiper-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+  .swiper-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
 .nearby-title {
   display: flex;
   justify-content: space-between;
@@ -367,6 +447,8 @@ a {
     }
     .images {
       flex: 2 1 500px;
+      display: block;
+      overflow: hidden;
       height: 400px;
       background-size: cover;
       background-position: center;
