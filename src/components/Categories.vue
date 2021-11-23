@@ -25,6 +25,11 @@
           </button>
         </span>
       </div>
+      <div class="empty" v-if="selectedResults.length == 0">
+        <div class="image"></div>
+        <h2>很抱歉，查無資料</h2>
+        <p>我們無法在這個範圍裡找到相符的內容，請再重新搜尋</p>
+      </div>
 
       <div class="results-wrapper" v-for="result in selectedResults" :key="result.id">
         <router-link
@@ -103,6 +108,8 @@
 </template>
 <style lang="scss" scoped>
 $blue: #a6cde0;
+$darkBlue: #7baebe;
+
 * {
   //   border: 1px solid;
 }
@@ -112,10 +119,30 @@ $blue: #a6cde0;
 @mixin shadow {
   box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
-.categories-container {
-  //   background-color: #000;
-  //   min-height: 100vh;
-  //   display: flex;
+
+.empty {
+  display: flex;
+  // justify-content: center;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  .image {
+    width: 250px;
+    flex: 0 1 125px;
+    margin: 40px;
+    margin-top: 60px;
+    background-image: url(../assets/images/empty.png);
+    background-position: center;
+    background-size: cover;
+  }
+  h2 {
+    color: $darkBlue;
+  }
+  p {
+    color: #808080;
+  }
 }
 header {
   height: 200px;

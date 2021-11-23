@@ -39,14 +39,14 @@
                 name="tabs"
                 v-for="(city, index) in Object.keys(cities)"
                 :key="city.id"
-                :id="'tab-' + index"
+                :id="'home-tab-' + index"
                 :checked="index == 0"
               />
 
               <label
                 v-for="(city, index) in Object.keys(cities)"
                 :key="city.id"
-                :for="'tab-' + index"
+                :for="'home-tab-' + index"
                 class="tabs-label"
                 :id="'label-' + index"
                 >{{ cities[city].Zh }}</label
@@ -502,6 +502,7 @@ header {
       &.active {
         display: block;
         top: 70px;
+        width: calc(100% - 40px - 40px);
       }
       @include shadow();
       // border: 1px solid;
@@ -511,11 +512,13 @@ header {
       position: absolute;
       top: -350px;
       transition: all 0.5s;
+
       // left: 0;
-      width: calc(100% - 40px - 40px);
+      width: calc(100% - 40px - 40px - 150px);
       background-color: #fff;
-      border-radius: 20px;
       z-index: 3;
+      border-radius: 20px;
+
       h2 {
         display: inline-block;
         margin-right: 10px;
