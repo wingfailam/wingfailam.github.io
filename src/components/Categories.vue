@@ -11,7 +11,6 @@
         </div>
 
         <span class="buttons-container">
-          <!-- <button>{{ selectedTypeZh }}</button> -->
           <button
             v-for="type in types"
             :key="type.En"
@@ -43,8 +42,6 @@
           </div>
           <div class="results-content-container">
             <h3>{{ result.Name }}</h3>
-            <!-- <p>{{ result.OpenTime }}</p> -->
-            <!-- <p>{{ result.TicketInfo }}</p> -->
             <p v-if="result.Address"><span class="icon-address"></span>{{ result.Address }}</p>
           </div>
         </router-link>
@@ -109,10 +106,6 @@
 <style lang="scss" scoped>
 $blue: #a6cde0;
 $darkBlue: #7baebe;
-
-* {
-  //   border: 1px solid;
-}
 #nav {
   background-color: #fff;
 }
@@ -122,7 +115,6 @@ $darkBlue: #7baebe;
 
 .empty {
   display: flex;
-  // justify-content: center;
   justify-content: start;
   align-items: center;
   width: 100%;
@@ -167,8 +159,6 @@ header {
   top: 140px;
   width: 320px;
   @media (max-width: 768px) {
-    // position: absolute;
-    // left: -100%;
     display: none;
   }
 }
@@ -210,12 +200,8 @@ header {
       p {
         display: inline;
         font-family: 'SourceHanSerifTC-VF';
-        // font-weight: bold;
         margin: 0;
         margin-right: 12px;
-        // line-height: 50px;
-        // margin: 0;
-        // margin-bottom: 0px;
       }
     }
     .buttons-container {
@@ -235,7 +221,6 @@ header {
         &:hover,
         &.active {
           background-color: $blue;
-          // border: #fff;
           color: #fff;
         }
       }
@@ -298,7 +283,6 @@ header {
       height: 40px;
       display: flex;
       justify-content: center;
-      //   align-items: center;
       line-height: 35px;
     }
     button {
@@ -346,21 +330,6 @@ import TdxService from '@/components/TdxService';
 import types from '@/components/Types';
 import cities from '@/components/Cities';
 
-// function getCityByZh(city) {
-//   if (city === '台灣') {
-//     return '';
-//   }
-//   let payload = '';
-//   Object.keys(cities).some((area) => {
-//     const result = cities[area].Cities.find((el) => el.CityName === city);
-//     if (result) {
-//       payload = result.City;
-//       return true;
-//     }
-//     return false;
-//   });
-//   return payload;
-// }
 export default {
   components: { SideSearch },
   data() {
@@ -414,17 +383,12 @@ export default {
     },
   },
   async mounted() {
-    // get results and how many pages
     await this.getResult();
-    // this.results = await TdxService.getScenicSpot(this.selectedCityEn);
-    // this.lastPage = Math.ceil(this.results.length / this.perPage);
-
     this.setResult();
   },
   watch: {
     async $route(to, from) {
       // react to route changes...
-
       console.log(to, from);
       // city 變動
       if (to.params.city !== from.params.city || to.params.category !== from.params.category) {

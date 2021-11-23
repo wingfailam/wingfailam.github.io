@@ -54,7 +54,6 @@
               <div class="cities-container">
                 <div class="cities-slide">
                   <div class="cities-wrapper" v-for="area in Object.keys(cities)" :key="area.id">
-                    <!-- <p>{{ cities[area].Zh }}</p> -->
                     <button
                       v-for="cts in cities[area].Cities"
                       :key="cts.City"
@@ -180,11 +179,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
-// import Vue from 'vue'; // in Vue 2
 import axios from 'axios';
-// import VueAxios from 'vue-axios';
 import _ from 'lodash';
 import JsSHA from 'jssha';
 
@@ -204,25 +199,11 @@ function getAuthorizationHeader() {
   return { Authorization, 'X-Date': GMTString };
 }
 
-// function getCities7() {
-//   return new Promise((resolve) => {
-//     const api = 'https://gist.motc.gov.tw/gist_api/V3/Map/Basic/City?$format=JSON';
-//     return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-//       // console.log(response.data);
-//       const newData = _.shuffle(response.data);
-//       console.log(newData);
-//       resolve(newData.slice(0, 7));
-//     });
-//   });
-// }
-
 function getRestaurants5() {
   return new Promise((resolve) => {
     const api = 'https://ptx.transportdata.tw/MOTC/v2/Tourism/Restaurant?$filter=Picture%2FPictureUrl1%20ne%20null&$format=JSON';
     return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-      // console.log(response.data);
       const newData = _.shuffle(response.data);
-      console.log(newData);
       resolve(newData.slice(0, 5));
     });
   });
@@ -234,9 +215,7 @@ function getScenicSpot7() {
       + '$filter=Picture%2FPictureUrl1%20ne%20null&'
       + '$format=JSON';
     return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-      // console.log(response.data);
       const newData = _.shuffle(response.data);
-      console.log(newData);
       resolve(newData.slice(0, 7));
     });
   });
@@ -248,9 +227,7 @@ function getHotel6() {
       + '$filter=Picture%2FPictureUrl1%20ne%20null&'
       + '$format=JSON';
     return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-      // console.log(response.data);
       const newData = _.shuffle(response.data);
-      console.log(newData);
       resolve(newData.slice(0, 7));
     });
   });
@@ -271,15 +248,12 @@ function getActivities6() {
       + '$filter=Picture%2FPictureUrl1%20ne%20null&'
       + '$format=JSON';
     return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-      // console.log(response.data);
       let newData = _.shuffle(response.data);
       newData = newData.map((element) => {
         const temp = element;
         temp.Description = shortDescription(element.Description);
         return temp;
       });
-      // newData = shortDescription(newData);
-      console.log(newData);
       resolve(newData.slice(0, 7));
     });
   });
@@ -341,13 +315,8 @@ header {
   background-position: center;
   background-size: cover;
   display: flex;
-  // justify-content: center;
-  // justify-content:
-  // margin-top: 100px;
-
   align-items: center;
   flex-direction: column;
-
   .logo {
     margin-top: 95px;
     max-width: 500px;
@@ -359,7 +328,6 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-
     @media (max-width: 768px) {
       margin-top: 70px;
     }
@@ -367,23 +335,16 @@ header {
   .bar-container {
     overflow: hidden;
     position: absolute;
-    // bottom: 100px;
     top: 540px;
-    // margin: 20px;
-
     width: calc(100% - 80px);
     max-width: 600px;
-    // height: 80px;
     border-radius: 20px;
-    // display: flex;
     display: inline-flex;
-    // justify-content: space-around;
     justify-content: space-evenly;
     align-items: flex-start;
     $items-height: 40px;
     padding: 20px;
     padding-top: 0;
-    // margin: 20px;
     @media (max-width: 768px) {
       display: none;
     }
@@ -394,7 +355,6 @@ header {
       }
     }
 
-    // padding-bottom: 640px;
     @media (max-width: 768px) {
       top: 430px;
     }
@@ -421,20 +381,14 @@ header {
       }
       .dropdown,
       .search {
-        // width: 100%;
-        // max-width: 200px;
-        // height: 40px;
-        // flex-basis: 2fr;
         width: 100%;
         flex: 3 1 200px;
         height: $items-height;
 
         line-height: $items-height;
         border-radius: 10px;
-        // background-color: #b4b4b4;
         background-color: #ebebeb;
         color: #707070;
-        // padding: 10px;
         padding-left: 10px;
         font-size: 18px;
         z-index: 3;
@@ -454,9 +408,6 @@ header {
         }
       }
       .submit {
-        // width: 100%;
-        // max-width: 100px;
-        // height: 40px;
         flex: 1 1 70px;
         height: $items-height;
         line-height: $items-height;
@@ -486,10 +437,8 @@ header {
         background-color: #fff;
 
         width: 100%;
-        // height: calc(100% - 20px);
         height: calc(100% - 20px);
         border-radius: 20px;
-        // padding-bottom: 20px;
         content: '';
         position: absolute;
         top: 0;
@@ -505,7 +454,6 @@ header {
         width: calc(100% - 40px - 40px);
       }
       @include shadow();
-      // border: 1px solid;
       box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
       padding: 0px 20px;
       padding-bottom: 20px;
@@ -513,7 +461,6 @@ header {
       top: -350px;
       transition: all 0.5s;
 
-      // left: 0;
       width: calc(100% - 40px - 40px - 150px);
       background-color: #fff;
       z-index: 3;
@@ -537,7 +484,6 @@ header {
         &:hover,
         &.active {
           background-color: $blue;
-          // border: #fff;
           color: #fff;
         }
       }
@@ -550,7 +496,6 @@ header {
           .cities-container {
             width: 100%;
             height: 40px;
-            // padding-top: 20px;
             margin-top: 20px;
             position: relative;
             overflow: hidden;
@@ -566,8 +511,6 @@ header {
               left: 0px;
               transition: all 0.5s;
               .cities-wrapper {
-                // width: inherit;
-
                 width: 100%;
                 height: 100%;
                 display: inline-flex;
@@ -589,10 +532,6 @@ header {
           [type='radio'] {
             display: none;
           }
-          // [type='radio']:checked ~ label {
-          //   border-bottom: 3px solid $blue;
-          //   z-index: 2;
-          // }
 
           @for $i from 1 through 10 {
             input:nth-of-type(#{$i}):checked ~ label:nth-of-type(#{$i}) {
@@ -699,18 +638,15 @@ header {
         z-index: 2;
         font-size: 16px;
         font-weight: bold;
-        // color: #fff;
         color: #f8f8f8;
       }
       @media (max-width: 768px) {
         flex-basis: calc(50% - 7px);
-        // flex-grow: 1;
       }
       &.l {
         flex-basis: $height;
         @media (max-width: 768px) {
           flex-basis: 100%;
-          // flex-grow: 2;
         }
       }
     }
@@ -718,15 +654,12 @@ header {
   .restaurants-container {
     display: flex;
     flex-wrap: wrap;
-    // justify-content: space-between;
     gap: 15px;
     .restaurants-item {
       cursor: pointer;
       @include shadow();
       border-radius: 20px;
       height: 450px;
-
-      // backdrop-filter: grayscale(30%);
 
       flex: 1 1 230px;
       display: flex;
@@ -760,17 +693,10 @@ header {
       }
       h2,
       p {
-        // display: inline-block;
-        // align-self: flex-start;
         display: flex;
         align-items: flex-start;
         color: #f8f8f8f8;
         z-index: 2;
-        // backdrop-filter: blur(2px);
-        // backdrop-filter: grayscale(90%);
-        // backdrop-filter: brightness(60%);
-        // backdrop-filter: invert(30%);
-        // border-radius: 10px;
         padding: 0 10px;
       }
       p {
@@ -832,11 +758,8 @@ header {
     gap: 15px;
     .activity-item {
       @include shadow();
-      // background-color: gray;
-      // flex-basis: 250px;
       height: 250px;
       width: 100%;
-      // padding: 10px;
       border-radius: 20px;
       @media (max-width: 768px) {
         height: auto;
@@ -853,13 +776,10 @@ header {
       }
 
       .img {
-        // height: 100%;
         flex: 1 0 250px;
-        // width: 250px;
         width: 100%;
         height: 100%;
         border-radius: 20px 0px 0px 20px;
-        // background: red;
         position: relative;
         overflow: hidden;
         position: relative;
@@ -883,7 +803,6 @@ header {
           border-radius: 20px 0 0 20px;
           z-index: 1;
 
-          // background: linear-gradient(#000, rgba(255, 255, 255, 0));
           opacity: 0.7;
           backdrop-filter: grayscale(10%);
           backdrop-filter: contrast(50%);

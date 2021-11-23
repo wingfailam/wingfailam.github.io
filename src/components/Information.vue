@@ -34,7 +34,6 @@
               <span class="icon icon-transportation"></span>{{ detail.TravelInfo }}
             </div>
             <div class="official-website" v-if="detail.WebsiteUrl">
-              <!-- <span class="icon icon-official-website"></span> -->
               <font-awesome-icon :icon="['fas', 'globe-americas']" />
 
               <a :href="'tel:' + detail.WebsiteUrl"
@@ -372,8 +371,6 @@ export default {
         position = this.detail.PointType;
       }
       const temp = await tdxService.getDetailNearby(cat, this.$route.params.city, position);
-      //   this.nearbyScenicspot = temp;
-      console.log(temp);
       return temp;
     },
     async getNearbyAll() {
@@ -390,7 +387,6 @@ export default {
   },
   watch: {
     async $route(to, from) {
-      // react to route changes...
       console.log(to, from);
       await this.getDetail();
       this.getNearbyAll();
@@ -400,9 +396,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-* {
-  //   border: 1px solid;
-}
 $blue: #a6cde0;
 $darkBlue: #7baebe;
 h2,
@@ -431,7 +424,6 @@ button {
   &:hover,
   &.active {
     background-color: $blue;
-    // border: #fff;
     color: #fff;
   }
 }
@@ -499,10 +491,7 @@ button {
 a {
   .icon {
     width: 18px;
-    //   vertical-align: bottom;
     vertical-align: center;
-
-    // display: inline-block;
     display: inline-flex;
     vertical-align: bottom;
     vertical-align: sub;
@@ -515,7 +504,6 @@ a {
   flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
-  // margin-top: 5px;
 
   background-size: contain;
   background-position: center;
@@ -568,13 +556,11 @@ a {
       flex: 2 1 500px;
       display: block;
       overflow: hidden;
-      // height: 400px;
       min-height: 400px;
       max-height: 100vh;
       background-size: cover;
       background-position: center;
       border-radius: 20px;
-      //   padding-left: 40px;
       margin-left: 40px;
       @media (max-width: 768px) {
         margin: 0;
@@ -603,7 +589,6 @@ a {
         // 左側線
         content: '';
         height: calc(100% - 60px);
-        // width: calc(100% - 40px);
         width: 1px;
         left: 0px;
         position: absolute;
@@ -624,18 +609,7 @@ a {
     display: flex;
     flex-direction: column;
     position: relative;
-    // &::before {
-    //   content: '';
-    //   width: 80%;
-    //   position: absolute;
-    //   height: 1px;
-    //   background-color: $darkBlue;
-    //   left: 10%;
-    //   bottom: 0;
-    // }
-    @media (max-width: 768px) {
-      //   padding: 0;
-    }
+
     pre {
       white-space: pre-wrap;
       line-height: 25px;
@@ -648,15 +622,12 @@ a {
 }
 .scenicspot-results-container {
   margin-top: 20px;
-  //   margin-left: 400px;
-  //   margin-right: 80px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
   @media (max-width: 768px) {
     margin: 0;
-    // padding: 20px 0px;
   }
 
   .scenicspot-results-header {
@@ -685,12 +656,8 @@ a {
       p {
         display: inline;
         font-family: 'SourceHanSerifTC-VF';
-        // font-weight: bold;
         margin: 0;
         margin-right: 12px;
-        // line-height: 50px;
-        // margin: 0;
-        // margin-bottom: 0px;
       }
     }
     .buttons-container {
@@ -710,7 +677,6 @@ a {
         &:hover,
         &.active {
           background-color: $blue;
-          // border: #fff;
           color: #fff;
         }
       }
@@ -763,10 +729,7 @@ a {
         z-index: 1;
 
         opacity: 0.7;
-        // backdrop-filter: grayscale(100%);
         backdrop-filter: contrast(80%);
-
-        // opacity: 1;
       }
 
       &:hover .scenicspot-results-img {
@@ -797,7 +760,6 @@ a {
       height: 40px;
       display: flex;
       justify-content: center;
-      //   align-items: center;
       line-height: 35px;
     }
     button {
@@ -841,15 +803,12 @@ a {
 .restaurants-container {
   display: flex;
   flex-wrap: wrap;
-  // justify-content: space-between;
   gap: 15px;
   .restaurants-item {
     cursor: pointer;
     @include shadow();
     border-radius: 20px;
     height: 450px;
-
-    // backdrop-filter: grayscale(30%);
 
     flex: 1 1 230px;
     display: flex;
@@ -883,17 +842,10 @@ a {
     }
     h2,
     p {
-      // display: inline-block;
-      // align-self: flex-start;
       display: flex;
       align-items: flex-start;
       color: #f8f8f8f8;
       z-index: 2;
-      // backdrop-filter: blur(2px);
-      // backdrop-filter: grayscale(90%);
-      // backdrop-filter: brightness(60%);
-      // backdrop-filter: invert(30%);
-      // border-radius: 10px;
       padding: 0 10px;
     }
     p {
@@ -955,11 +907,8 @@ a {
   gap: 15px;
   .activity-item {
     @include shadow();
-    // background-color: gray;
-    // flex-basis: 250px;
     height: 250px;
     width: 100%;
-    // padding: 10px;
     border-radius: 20px;
     @media (max-width: 768px) {
       height: auto;
@@ -976,13 +925,10 @@ a {
     }
 
     .img {
-      // height: 100%;
       flex: 1 0 250px;
-      // width: 250px;
       width: 100%;
       height: 100%;
       border-radius: 20px 0px 0px 20px;
-      // background: red;
       position: relative;
       overflow: hidden;
       position: relative;
@@ -1006,7 +952,6 @@ a {
         border-radius: 20px 0 0 20px;
         z-index: 1;
 
-        // background: linear-gradient(#000, rgba(255, 255, 255, 0));
         opacity: 0.7;
         backdrop-filter: grayscale(10%);
         backdrop-filter: contrast(50%);

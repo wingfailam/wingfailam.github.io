@@ -30,27 +30,6 @@
           台灣
         </button>
         <div class="tabs-container">
-          <!-- <div class="radio-container">
-              <input
-                type="radio"
-                class="tabs-radio"
-                name="tabs"
-                v-for="(city, index) in Object.keys(cities)"
-                :key="city.id"
-                :id="'tab-' + index"
-                :checked="index == 0"
-              />
-              <div class="label-container">
-                <label
-                  v-for="(city, index) in Object.keys(cities)"
-                  :key="city.id"
-                  :for="'tab-' + index"
-                  class="tabs-label"
-                  :id="'label-' + index"
-                  >{{ cities[city].Zh }}</label
-                >
-              </div>
-            </div> -->
           <div class="radio-container">
             <input
               type="radio"
@@ -73,7 +52,6 @@
             <div class="cities-container">
               <div class="cities-slide">
                 <div class="cities-wrapper" v-for="area in Object.keys(cities)" :key="area.id">
-                  <!-- <p>{{ cities[area].Zh }}</p> -->
                   <button
                     v-for="cts in cities[area].Cities"
                     :key="cts.City"
@@ -170,7 +148,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .background-container {
   position: fixed;
@@ -198,9 +175,6 @@ export default {
   }
 }
 $blue: #a6cde0;
-* {
-  // border: solid 1px;
-}
 @mixin shadow {
   box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
@@ -212,12 +186,9 @@ $blue: #a6cde0;
   left: 0;
   top: 100px;
   width: calc(100% - 40px);
-
-  // max-width: 320px;
-
   border-radius: 20px;
   $items-height: 40px;
-  // padding: 20px;
+
   margin: 20px;
   display: flex;
   flex-direction: column;
@@ -225,9 +196,7 @@ $blue: #a6cde0;
   transition: all 0.5s;
   &.active {
     box-shadow: -2px -2px 50px 1px rgba(0, 0, 0, 0.2);
-    @media (max-width: 768px) {
-      // padding-bottom: 300px;
-    }
+
     .bar-wrapper {
       transition: all 0.5s;
       @media (max-width: 768px) {
@@ -240,7 +209,6 @@ $blue: #a6cde0;
     flex-direction: column;
     justify-content: space-evenly;
     padding: 20px;
-    // margin: 20px;
     border-radius: 20px;
     background-color: #fff;
     width: calc(100% - 40px);
@@ -256,19 +224,12 @@ $blue: #a6cde0;
     }
     .dropdown,
     .search {
-      // width: 100%;
-      // max-width: 200px;
-      // height: 40px;
-      // flex-basis: 2fr;
-      // width: calc(100% - 60px);
       width: calc(100% - 40px);
       flex: 0 1 $items-height;
       line-height: $items-height;
       border-radius: 10px;
       background-color: #ebebeb;
       color: #707070;
-      // padding: 0 10px;
-      // margin: 0 10px;
       font-size: 18px;
       z-index: 3;
       padding: 0px 20px;
@@ -306,13 +267,11 @@ $blue: #a6cde0;
       background-color: #fff;
       width: 100%;
       height: 60px;
-      // border-radius: 0 0 20px 20px;
       z-index: 4;
     }
   }
 
   .dropdown-container {
-    // display: none;
     left: calc(20px - 5px);
     top: calc(-100% - 200px);
     transition: all 0.5s;
@@ -335,8 +294,6 @@ $blue: #a6cde0;
         @include shadow();
       }
     }
-    // @include shadow();
-
     padding: 0px 20px;
     padding-bottom: 20px;
 
@@ -364,7 +321,6 @@ $blue: #a6cde0;
       &:hover,
       &.active {
         background-color: $blue;
-        // border: #fff;
         color: #fff;
       }
     }
@@ -377,7 +333,6 @@ $blue: #a6cde0;
         .cities-container {
           width: 100%;
           height: 145px;
-          // padding-top: 20px;
           margin-top: 20px;
           position: relative;
           overflow: hidden;
@@ -393,8 +348,6 @@ $blue: #a6cde0;
             left: 0px;
             transition: all 0.5s;
             .cities-wrapper {
-              // width: inherit;
-
               width: 100%;
               height: 100%;
               display: inline-flex;
@@ -416,11 +369,6 @@ $blue: #a6cde0;
         [type='radio'] {
           display: none;
         }
-        // [type='radio']:checked ~ label {
-        //   border-bottom: 3px solid $blue;
-        //   z-index: 2;
-        // }
-
         @for $i from 1 through 10 {
           input:nth-of-type(#{$i}):checked ~ label:nth-of-type(#{$i}) {
             border-bottom: 3px solid $blue;

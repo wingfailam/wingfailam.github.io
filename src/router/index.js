@@ -10,7 +10,7 @@ const routes = [
     path: '/',
     name: 'Home',
     // component: Home,
-    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
+    component: () => import('../views/Home.vue'),
   },
   // 資訊頁面轉向
   {
@@ -26,35 +26,27 @@ const routes = [
   {
     path: '/information/:category/:city/:id',
     name: 'information',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../components/Information.vue'),
+    component: () => import('../components/Information.vue'),
   },
   // 搜尋頁面
   {
     path: '/:category/:city/:q?/',
     name: 'scenicspot',
-    component: () => import(/* webpackChunkName: "about" */ '../components/Categories.vue'),
+    component: () => import('../components/Categories.vue'),
   },
   // 搜尋頁面轉向
   {
     path: '/:category',
     name: 'category',
     redirect: '/:category/Taiwan',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-
-    component: () => import(/* webpackChunkName: "about" */ '../components/Categories.vue'),
+    component: () => import('../components/Categories.vue'),
   },
   // 其他都轉到首頁
   {
     path: '/*',
     name: 'Home',
     redirect: '/',
-    // component: Home,
-    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
+    component: () => import('../views/Home.vue'),
   },
 ];
 
