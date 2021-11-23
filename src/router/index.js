@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 const routes = [
   // 首頁
   {
-    path: '',
+    path: '/',
     name: 'Home',
     // component: Home,
     component: () => import('../views/Home.vue'),
@@ -45,15 +45,15 @@ const routes = [
   {
     path: '*',
     name: 'Home',
-    redirect: '',
+    redirect: '/',
     component: () => import('../views/Home.vue'),
   },
 ];
 
 const router = new VueRouter({
-  // mode: 'history',
-  mode: 'hash',
-  // base: process.env.BASE_URL,
+  mode: 'history',
+  // mode: 'hash',
+  base: process.env.BASE_URL,
   routes,
   scrollBehavior() {
     return { x: 0, y: 0 };
