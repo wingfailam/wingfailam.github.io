@@ -6,19 +6,21 @@
       <div class="logo"></div>
       <div class="bar-container" :class="{ active: toggle == 1 }">
         <div class="bar-wrapper">
-          <div class="dropdown" @click="toggle = !toggle">
-            {{ selectedCity.CityName }}
-            /
-            {{ selectedType.Zh }}
+          <div class="ctl-container">
+            <div class="dropdown" @click="toggle = !toggle">
+              {{ selectedCity.CityName }}
+              /
+              {{ selectedType.Zh }}
+            </div>
+            <input
+              class="search"
+              name="taiwantravel-search"
+              placeholder="請輸入關鍵詞"
+              v-model="queryString"
+              @keypress="enterClicked()"
+            />
+            <div class="submit" @click="enterClicked()">SEARCH</div>
           </div>
-          <input
-            class="search"
-            name="taiwantravel-search"
-            placeholder="請輸入關鍵詞"
-            v-model="queryString"
-            @keypress="enterClicked()"
-          />
-          <div class="submit" @click="enterClicked()">SEARCH</div>
         </div>
 
         <div class="dropdown-container" :class="{ active: toggle == 1 }">
@@ -366,7 +368,7 @@ header {
     overflow: hidden;
     position: absolute;
     // bottom: 100px;
-    top: 510px;
+    top: 540px;
     // margin: 20px;
 
     width: calc(100% - 80px);
@@ -380,6 +382,8 @@ header {
     align-items: flex-start;
     $items-height: 40px;
     padding: 20px;
+    padding-top: 0;
+    // margin: 20px;
     @media (max-width: 768px) {
       display: none;
     }
@@ -395,6 +399,13 @@ header {
       top: 430px;
     }
     .bar-wrapper {
+      .ctl-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        gap: 10px;
+        z-index: 20;
+      }
       @include shadow();
       padding: 20px 20px;
       border-radius: 20px;
@@ -473,6 +484,7 @@ header {
       }
       &::before {
         background-color: #fff;
+
         width: 100%;
         // height: calc(100% - 20px);
         height: calc(100% - 20px);
@@ -482,13 +494,14 @@ header {
         position: absolute;
         top: 0;
         left: 0;
+        z-index: 19;
       }
     }
 
     .dropdown-container {
-      display: none;
       &.active {
         display: block;
+        top: 70px;
       }
       @include shadow();
       // border: 1px solid;
@@ -496,7 +509,8 @@ header {
       padding: 0px 20px;
       padding-bottom: 20px;
       position: absolute;
-      top: 90px;
+      top: -350px;
+      transition: all 0.5s;
       // left: 0;
       width: calc(100% - 40px - 40px);
       background-color: #fff;

@@ -37,8 +37,14 @@ const TdxService = {
     let computedCity = city;
     let computedQueryString = '';
     let positionQueryString = '';
+    let tagQueryString = '';
+    console.log(keyword);
     if (keyword && keyword[0] === '@') {
       positionQueryString = `&$spatialFilter=nearby(${keyword.split('@')[1]},10000)`;
+    } else if (keyword && keyword[0] === '_') {
+      tagQueryString = ` and contains(Class1,'${keyword.split('_')[1]}') or contains(Class2,'${
+        keyword.split('_')[1]
+      }') or contains(Class3,'${keyword.split('_')[1]}')`;
     } else if (keyword) {
       computedQueryString = ` and contains(Name,'${keyword}') or contains(Description,'${keyword}')`;
     }
@@ -47,7 +53,8 @@ const TdxService = {
       const api = `${
         `https://ptx.transportdata.tw/MOTC/v2/Tourism/${category}/${computedCity}?`
         + '$filter=Picture%2FPictureUrl1%20ne%20null'
-      }${computedQueryString}${positionQueryString}&$format=JSON`;
+      }${computedQueryString}${tagQueryString}${positionQueryString}&$format=JSON`;
+      console.log(api);
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
         // const newData = _.shuffle(response.data);
         // console.log(newData);
@@ -76,22 +83,16 @@ const TdxService = {
   getDetailNearby(category, city, position) {
     let computedCity = city;
     let computedQueryString = '';
-    // const position = {
-    //   PositionLon: 120.9294662475586,
-    //   PositionLat: 23.848909378051758,
-    //   GeoHash: 'wsjzxvd1u',
-    // };
+
     computedQueryString = `&$spatialFilter=nearby(${position.PositionLat}, ${position.PositionLon}, 10000)`;
     if (city === 'Taiwan') computedCity = '';
     return new Promise((resolve) => {
       const api = `${
         `https://ptx.transportdata.tw/MOTC/v2/Tourism/${category}/${computedCity}?`
         + '$filter=Picture%2FPictureUrl1%20ne%20null'
-      }${computedQueryString}&$top=3&$format=JSON`;
+      }${computedQueryString}&$skip=1&$top=3&$format=JSON`;
       console.log(api);
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-        // const newData = _.shuffle(response.data);
-        // console.log(newData);
         resolve(response.data);
       });
     });

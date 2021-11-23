@@ -7,7 +7,14 @@
         <div class="informations">
           <h3 class="title">景點資訊</h3>
           <div class="content">
-            <div class="address">
+            <div class="date" v-if="detail.StartTime || detail.EndTime">
+              <span class="icon icon-calander"></span>
+              <span>
+                {{ detail.StartTime | timeString('YYYY-MM-DD') }} ~
+                {{ detail.EndTime | timeString('YYYY-MM-DD') }}
+              </span>
+            </div>
+            <div class="address" v-if="detail.Address">
               <span class="icon icon-address"></span>
               <a :href="'https://www.google.com/maps/search/' + detail.Name"
                 >{{ detail.Address }}
@@ -27,10 +34,50 @@
               <span class="icon icon-transportation"></span>{{ detail.TravelInfo }}
             </div>
             <div class="official-website" v-if="detail.WebsiteUrl">
-              <span class="icon icon-official-website"></span>
+              <!-- <span class="icon icon-official-website"></span> -->
+              <font-awesome-icon :icon="['fas', 'globe-americas']" />
+
               <a :href="'tel:' + detail.WebsiteUrl"
                 >官方網站 <span class="icon icon-right icon-link"></span>
               </a>
+            </div>
+            <div class="serviceInfo" v-if="detail.ServiceInfo">
+              <span class="icon icon-information"></span>
+              ☑ {{ computedServiceInfo(detail.ServiceInfo) }}
+            </div>
+            <div class="ParkingInfo" v-if="detail.ParkingInfo">
+              <span class="icon icon-transportation"></span>
+              {{ detail.ParkingInfo.replace('車位:', '可容納：') }}
+            </div>
+            <div class="organizer" v-if="detail.Organizer">
+              <font-awesome-icon :icon="['fas', 'users']" />{{ detail.Organizer }}
+            </div>
+            <div class="cycle" v-if="detail.Cycle">
+              <span class="icon icon-official-website"></span>
+              {{ detail.Cycle }}
+            </div>
+            <div class="tags" v-if="detail.Class1 || detail.Class2 || detail.Class3">
+              <font-awesome-icon :icon="['fas', 'tags']" />
+              <router-link
+                :to="{
+                  path: '/' + $route.params.category + '/Taiwan/_' + detail.Class1,
+                }"
+              >
+                <button v-if="detail.Class1">{{ detail.Class1 }}</button>
+              </router-link>
+              <router-link
+                :to="{
+                  path: '/' + $route.params.category + '/Taiwan/_' + detail.Class2,
+                }"
+              >
+                <button v-if="detail.Class2">{{ detail.Class2 }}</button>
+              </router-link>
+              <router-link
+                :to="{
+                  path: '/' + $route.params.category + '/Taiwan/_' + detail.Class3,
+                }"
+                ><button v-if="detail.Class3">{{ detail.Class3 }}</button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -54,16 +101,27 @@
               ></swiper-slide>
 
               <div class="swiper-pagination" slot="pagination"></div>
-              <div class="swiper-button-prev" slot="button-prev"></div>
-              <div class="swiper-button-next" slot="button-next"></div>
+              <div
+                class="swiper-button-prev"
+                slot="button-prev"
+                v-if="detail.Picture.PictureUrl2"
+              ></div>
+              <div
+                class="swiper-button-next"
+                slot="button-next"
+                v-if="detail.Picture.PictureUrl2"
+              ></div>
             </swiper>
           </div>
         </div>
       </div>
       <div class="sub">
-        <h3 v-if="detail.DescriptionDetail">景點介紹</h3>
+        <h3 v-if="detail.Description || detail.DescriptionDetail">景點介紹</h3>
         <pre v-if="detail.DescriptionDetail">{{
           detail.DescriptionDetail.replaceAll(['。'], '。\n\n')
+        }}</pre>
+        <pre v-if="!detail.DescriptionDetail && detail.Description">{{
+          detail.Description.replaceAll(['。'], '。\n\n')
         }}</pre>
 
         <div class="nearby-title">
@@ -117,7 +175,9 @@
                 detail.Position.PositionLon,
             }"
           >
-            <h3>鄰近的飲食 <span class="icon icon-right icon-link"></span></h3>
+            <h3 v-if="nearbyRestaurant.length !== 0">
+              鄰近的飲食 <span class="icon icon-right icon-link"></span>
+            </h3>
           </router-link>
         </div>
         <div class="container restaurants-container">
@@ -187,7 +247,9 @@
                 detail.Position.PositionLon,
             }"
           >
-            <h3>鄰近的活動 <span class="icon icon-right icon-link"></span></h3>
+            <h3 v-if="nearbyActivity.length !== 0">
+              鄰近的活動 <span class="icon icon-right icon-link"></span>
+            </h3>
           </router-link>
         </div>
         <div class="container activities-container">
@@ -241,28 +303,46 @@ export default {
       nearbyRestaurant: null,
       nearbyHotel: null,
       nearbyActivity: null,
-      swiperOption: {
+    };
+  },
+  computed: {
+    swiperOption() {
+      let autoplay = null;
+      let navigation = null;
+
+      if (this.detail.Picture.PictureUrl2) {
+        autoplay = {
+          delay: 3000,
+
+          disableOnInteraction: false,
+        };
+        navigation = {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        };
+      }
+      return {
         spaceBetween: 30,
         centeredSlides: true,
         loop: true,
         speed: 1500,
-        autoplay: {
-          delay: 3000,
-
-          disableOnInteraction: false,
-        },
+        autoplay,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
         },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      },
-    };
+        navigation,
+      };
+    },
   },
   methods: {
+    computedServiceInfo(input) {
+      let inputArr = input.split(',');
+      inputArr = inputArr.filter(Boolean);
+      let result = inputArr.join(' ☑ ');
+      result = result.replaceAll('<br>', '');
+      return result;
+    },
     swiper() {
       return this.$refs.mySwiper.$swiper;
     },
@@ -308,6 +388,15 @@ export default {
     this.getNearbyAll();
     this.swiper.slideTo(3, 1000, false);
   },
+  watch: {
+    async $route(to, from) {
+      // react to route changes...
+      console.log(to, from);
+      await this.getDetail();
+      this.getNearbyAll();
+      this.swiper.slideTo(3, 1000, false);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -325,6 +414,33 @@ h3 {
 h3 {
   font-size: 18px;
   span {
+  }
+}
+button {
+  width: 80px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border: solid 1px $blue;
+  padding: 5px;
+  border-radius: 10px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
+  &:hover,
+  &.active {
+    background-color: $blue;
+    // border: #fff;
+    color: #fff;
+  }
+}
+
+.svg-inline--fa {
+  font-size: 18px;
+  margin-right: 10px;
+  path {
+    color: $darkBlue !important;
   }
 }
 .my-swiper-container {
@@ -404,6 +520,9 @@ a {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  &-calander {
+    background-image: url(../assets/images/icons/calander.svg);
+  }
   &-address {
     background-image: url(../assets/images/icons/site.svg);
   }
@@ -422,7 +541,7 @@ a {
   &-transportation {
     background-image: url(../assets/images/icons/transportation.svg);
   }
-  &-official-website {
+  &-information {
     background-image: url(../assets/images/icons/information.svg);
   }
 }
@@ -449,7 +568,9 @@ a {
       flex: 2 1 500px;
       display: block;
       overflow: hidden;
-      height: 400px;
+      // height: 400px;
+      min-height: 400px;
+      max-height: 100vh;
       background-size: cover;
       background-position: center;
       border-radius: 20px;
@@ -458,6 +579,7 @@ a {
       @media (max-width: 768px) {
         margin: 0;
         flex: 1 1 250px;
+        height: 250px;
       }
     }
     .informations {
