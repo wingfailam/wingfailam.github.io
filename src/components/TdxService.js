@@ -24,7 +24,7 @@ const TdxService = {
     return new Promise((resolve) => {
       const api = `${
         `https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot/${computedCity}?`
-        + '$filter=Picture%2FPictureUrl1%20ne%20null'
+        + '$filter=Picture/PictureUrl1 ne null'
       }${computedQueryString}&$format=JSON`;
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
         // const newData = _.shuffle(response.data);
@@ -42,17 +42,17 @@ const TdxService = {
     if (keyword && keyword[0] === '@') {
       positionQueryString = `&$spatialFilter=nearby(${keyword.split('@')[1]},10000)`;
     } else if (keyword && keyword[0] === '_') {
-      tagQueryString = ` and contains(Class1,'${keyword.split('_')[1]}') or contains(Class2,'${
+      tagQueryString = ` and (contains(Class1,'${keyword.split('_')[1]}') or contains(Class2,'${
         keyword.split('_')[1]
-      }') or contains(Class3,'${keyword.split('_')[1]}')`;
+      }') or contains(Class3,'${keyword.split('_')[1]}'))`;
     } else if (keyword) {
-      computedQueryString = ` and contains(Name,'${keyword}') or contains(Description,'${keyword}')`;
+      computedQueryString = ` and (contains(Name,'${keyword}') or contains(Description,'${keyword}'))`;
     }
     if (city === 'Taiwan') computedCity = '';
     return new Promise((resolve) => {
       const api = `${
         `https://ptx.transportdata.tw/MOTC/v2/Tourism/${category}/${computedCity}?`
-        + '$filter=Picture%2FPictureUrl1%20ne%20null'
+        + '$filter=Picture/PictureUrl1 ne null'
       }${computedQueryString}${tagQueryString}${positionQueryString}&$format=JSON`;
       console.log(api);
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
@@ -70,7 +70,7 @@ const TdxService = {
     return new Promise((resolve) => {
       const api = `${
         `https://ptx.transportdata.tw/MOTC/v2/Tourism/${category}/${computedCity}?`
-        + '$filter=Picture%2FPictureUrl1%20ne%20null'
+        + '$filter=Picture/PictureUrl1 ne null'
       }${computedQueryString}&$format=JSON`;
       console.log(api);
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
@@ -89,7 +89,7 @@ const TdxService = {
     return new Promise((resolve) => {
       const api = `${
         `https://ptx.transportdata.tw/MOTC/v2/Tourism/${category}/${computedCity}?`
-        + '$filter=Picture%2FPictureUrl1%20ne%20null'
+        + '$filter=Picture/PictureUrl1 ne null'
       }${computedQueryString}&$skip=1&$top=3&$format=JSON`;
       console.log(api);
       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
@@ -97,17 +97,5 @@ const TdxService = {
       });
     });
   },
-  //   getScenicSpotByCity() {
-  //     return new Promise((resolve) => {
-  //       const api = 'https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot?'
-  //         + '$filter=Picture%2FPictureUrl1%20ne%20null&'
-  //         + '$format=JSON';
-  //       return axios.get(api, { headers: getAuthorizationHeader() }).then((response) => {
-  //         // const newData = _.shuffle(response.data);
-  //         // console.log(newData);
-  //         resolve(response.data);
-  //       });
-  //     });
-  //   },
 };
 export default TdxService;
