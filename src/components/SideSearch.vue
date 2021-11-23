@@ -11,7 +11,7 @@
         name="taiwantravel-search"
         placeholder="請輸入關鍵詞"
         v-model="queryString"
-        @keypress="enterClicked()"
+        @keypress.enter="enterClicked()"
       />
       <router-link :to="{ path: '/' + selectedType + '/' + selectedCity + '/' + queryString }">
         <div class="submit">SEARCH</div>

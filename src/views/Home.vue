@@ -17,7 +17,7 @@
               name="taiwantravel-search"
               placeholder="請輸入關鍵詞"
               v-model="queryString"
-              @keypress="enterClicked()"
+              @keypress.enter="enterClicked()"
             />
             <div class="submit" @click="enterClicked()">SEARCH</div>
           </div>
