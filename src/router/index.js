@@ -3,11 +3,11 @@ import VueRouter from 'vue-router';
 // import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
-
+// const root = process.env.NODE_ENV;
 const routes = [
   // 首頁
   {
-    path: '/',
+    path: '',
     name: 'Home',
     // component: Home,
     component: () => import('../views/Home.vue'),
@@ -43,15 +43,17 @@ const routes = [
   },
   // 其他都轉到首頁
   {
-    path: '/*',
+    path: '*',
     name: 'Home',
-    redirect: '/',
+    redirect: '',
     component: () => import('../views/Home.vue'),
   },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
+  mode: 'hash',
+  // base: process.env.BASE_URL,
   routes,
   scrollBehavior() {
     return { x: 0, y: 0 };
