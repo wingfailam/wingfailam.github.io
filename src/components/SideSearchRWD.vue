@@ -1,5 +1,6 @@
 <template>
   <div class="background-container">
+    <div class="background-wrapper" @click="closeSearch()"></div>
     <button class="close" @click="closeSearch()">x</button>
 
     <div class="bar-container" :class="{ active: toggle == 1 }">
@@ -172,6 +173,16 @@ export default {
     background-color: #fff;
     font-size: 20px;
     line-height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .background-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 }
 $blue: #a6cde0;
