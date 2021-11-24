@@ -30,23 +30,23 @@
         >
           台灣
         </button>
-        <div class="tabs-container">
+        <div class="rwd-tabs-container">
           <div class="radio-container">
             <input
               type="radio"
-              class="tabs-radio"
-              name="tabs"
+              class="rwd-tabs-radio"
+              name="rwd-tabs"
               v-for="(city, index) in Object.keys(cities)"
               :key="city.id"
-              :id="'tab-' + index"
-              :checked="index == 0"
+              :id="'rwd-tab-' + index"
+              :checked="cities[city].Cities.some((el) => el.City == $route.params.city)"
             />
 
             <label
               v-for="(city, index) in Object.keys(cities)"
               :key="city.id"
-              :for="'tab-' + index"
-              class="tabs-label"
+              :for="'rwd-tab-' + index"
+              class="rwd-tabs-label"
               :id="'label-' + index"
               >{{ cities[city].Zh }}</label
             >
@@ -156,6 +156,7 @@ export default {
   left: -100%;
   width: 100vw;
   height: 100vh;
+  display: none;
   background-color: rgba(0, 0, 0, 0.5);
   &.active {
     left: 0;
@@ -183,6 +184,9 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
+  }
+  @media (max-width: 768px) {
+    display: block;
   }
 }
 $blue: #a6cde0;
@@ -335,7 +339,7 @@ $blue: #a6cde0;
         color: #fff;
       }
     }
-    .tabs-container {
+    .rwd-tabs-container {
       width: 100%;
       .radio-container {
         display: block;

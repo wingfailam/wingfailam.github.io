@@ -53,7 +53,7 @@
             v-for="(city, index) in Object.keys(cities)"
             :key="city.id"
             :id="'tab-' + index"
-            :checked="index == 0"
+            :checked="cities[city].Cities.some((el) => el.City == $route.params.city)"
           />
 
           <label
