@@ -18,6 +18,7 @@
       <span>Front-end Wingfailam.</span>
       <span>All rights reserved.</span>
     </footer>
+    <div class="back-to-top" :class="{ active: scrollY }" @click="backToTop()"></div>
   </div>
 </template>
 <script>
@@ -28,7 +29,19 @@ export default {
   data() {
     return {
       toggleSideSearchRWD: 0,
+      scrollY: 0,
     };
+  },
+  methods: {
+    handleScroll() {
+      this.scrollY = window.scrollY;
+    },
+    backToTop() {
+      window.scroll({ top: 0, behavior: 'smooth' });
+    },
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
   },
 };
 </script>
@@ -140,6 +153,25 @@ footer {
   }
   @media (max-width: 768px) {
     flex-direction: column;
+  }
+}
+.back-to-top {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background-color: unset;
+  border: 0px;
+  background-image: url(./assets/images/icons/gotop_default.svg);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.5s;
+  &.active {
+    opacity: 1;
+  }
+  &:hover {
+    background-image: url(./assets/images/icons/gotop_hover.svg);
   }
 }
 </style>
