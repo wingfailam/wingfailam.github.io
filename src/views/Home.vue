@@ -90,13 +90,13 @@
       <div class="scenicspots-container">
         <div
           v-for="(scenicspot, index) in scenicspots"
-          :key="scenicspot.id"
+          :key="scenicspot.ScenicSpotID"
           class="scenicspots-item"
           :class="{ l: index % 3 == 0 }"
         >
           <router-link
             :to="{
-              path: '/information/' + 'scenicspot' + '/Taiwan/' + scenicspot.ID,
+              path: '/information/' + 'scenicspot' + '/Taiwan/' + scenicspot.ScenicSpotID,
             }"
           >
             <div
@@ -105,16 +105,20 @@
                 'background-image': 'url(' + scenicspot.Picture.PictureUrl1 + ')',
               }"
             ></div>
-            <span> {{ scenicspot.Name }}</span>
+            <span> {{ scenicspot.ScenicSpotName }}</span>
           </router-link>
         </div>
       </div>
       <h2>美食推薦</h2>
       <div class="restaurants-container">
-        <div v-for="restaurant in restaurants" :key="restaurant.id" class="restaurants-item">
+        <div
+          v-for="restaurant in restaurants"
+          :key="restaurant.RestaurantID"
+          class="restaurants-item"
+        >
           <router-link
             :to="{
-              path: '/information/' + 'restaurant' + '/Taiwan/' + restaurant.ID,
+              path: '/information/' + 'restaurant' + '/Taiwan/' + restaurant.RestaurantID,
             }"
           >
             <div
@@ -132,10 +136,10 @@
 
       <h2>旅宿資訊</h2>
       <div class="hotels-container">
-        <div v-for="hotel in hotels" :key="hotel.id" class="hotels-item">
+        <div v-for="hotel in hotels" :key="hotel.HotelID" class="hotels-item">
           <router-link
             :to="{
-              path: '/information/' + 'hotel' + '/Taiwan/' + hotel.ID,
+              path: '/information/' + 'hotel' + '/Taiwan/' + hotel.HotelID,
             }"
           >
             <div
@@ -151,10 +155,10 @@
       </div>
       <h2>節慶活動</h2>
       <div class="activities-container">
-        <div v-for="activity in activities" :key="activity.id" class="activity-item">
+        <div v-for="activity in activities" :key="activity.ActivityID" class="activity-item">
           <router-link
             :to="{
-              path: '/information/' + 'activity' + '/Taiwan/' + activity.ID,
+              path: '/information/' + 'activity' + '/Taiwan/' + activity.ActivityID,
             }"
           >
             <div class="img">

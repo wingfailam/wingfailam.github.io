@@ -29,7 +29,7 @@ const TdxService = {
         keyword.split('_')[1]
       }') or contains(Class3,'${keyword.split('_')[1]}'))`;
     } else if (keyword) {
-      computedQueryString = ` and (contains(Name,'${keyword}') or contains(Description,'${keyword}'))`;
+      computedQueryString = ` and (contains(${category}Name,'${keyword}') or contains(Description,'${keyword}'))`;
     }
     if (city === 'Taiwan') computedCity = '';
     return new Promise((resolve) => {
@@ -45,7 +45,7 @@ const TdxService = {
   getDetailByID(category, city, id) {
     let computedCity = city;
     let computedQueryString = '';
-    computedQueryString = `%20and ID eq '${id}'`;
+    computedQueryString = `%20and ${category}ID eq '${id}'`;
     if (city === 'Taiwan') computedCity = '';
     return new Promise((resolve) => {
       const api = `${

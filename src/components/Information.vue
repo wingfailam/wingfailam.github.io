@@ -141,11 +141,17 @@
           <div
             class="scenicspot-results-wrapper"
             v-for="result in nearbyScenicspot"
-            :key="result.id"
+            :key="result.ScenicSpotID"
           >
             <router-link
               :to="{
-                path: '/information/' + 'scenicspot' + '/' + $route.params.city + '/' + result.ID,
+                path:
+                  '/information/' +
+                  'scenicspot' +
+                  '/' +
+                  $route.params.city +
+                  '/' +
+                  result.ScenicSpotID,
               }"
             >
               <div class="scenicspot-results-img-container">
@@ -180,11 +186,20 @@
           </router-link>
         </div>
         <div class="container restaurants-container">
-          <div class="restaurants-item" v-for="restaurant in nearbyRestaurant" :key="restaurant.id">
+          <div
+            class="restaurants-item"
+            v-for="restaurant in nearbyRestaurant"
+            :key="restaurant.RestaurantID"
+          >
             <router-link
               :to="{
                 path:
-                  '/information/' + 'restaurant' + '/' + $route.params.city + '/' + restaurant.ID,
+                  '/information/' +
+                  'restaurant' +
+                  '/' +
+                  $route.params.city +
+                  '/' +
+                  restaurant.RestaurantID,
               }"
             >
               <div
@@ -216,10 +231,10 @@
           </router-link>
         </div>
         <div class="container hotels-container">
-          <div class="hotels-item" v-for="hotel in nearbyHotel" :key="hotel.id">
+          <div class="hotels-item" v-for="hotel in nearbyHotel" :key="hotel.HotelID">
             <router-link
               :to="{
-                path: '/information/' + 'hotel' + '/' + $route.params.city + '/' + hotel.ID,
+                path: '/information/' + 'hotel' + '/' + $route.params.city + '/' + hotel.HotelID,
               }"
             >
               <div
@@ -252,10 +267,16 @@
           </router-link>
         </div>
         <div class="container activities-container">
-          <div v-for="activity in nearbyActivity" :key="activity.id" class="activity-item">
+          <div v-for="activity in nearbyActivity" :key="activity.ActivityID" class="activity-item">
             <router-link
               :to="{
-                path: '/information/' + 'activity' + '/' + $route.params.city + '/' + activity.ID,
+                path:
+                  '/information/' +
+                  'activity' +
+                  '/' +
+                  $route.params.city +
+                  '/' +
+                  activity.ActivityID,
               }"
             >
               <div class="img">
