@@ -32,7 +32,10 @@
 
       <div class="results-wrapper" v-for="result in selectedResults" :key="result.id">
         <router-link
-          :to="{ path: '/information/' + selectedType + '/' + selectedCity + '/' + result.ID }"
+          :to="{
+            path:
+              '/information/' + selectedType + '/' + selectedCity + '/' + result[selectedTypeUpper],
+          }"
         >
           <div class="results-img-container">
             <div
@@ -364,6 +367,13 @@ export default {
     },
     selectedTypeZh() {
       return types.find((el) => el.En === this.selectedType).Zh;
+    },
+    selectedTypeUpper() {
+      if (this.selectedType === 'scenicspot') {
+        return 'ScenicSpotID';
+      }
+      const temp = this.selectedType[0].toUpperCase() + this.selectedType.slice(1);
+      return `${temp}ID`;
     },
   },
   methods: {
